@@ -7,6 +7,40 @@ const creating = ref(false)
 const showCreate = ref(false)
 const newName = ref('')
 const newRuleset = ref('dnd5e_2024')
+const trigger = ref<HTMLElement | null>(null)
+const menuStyle = ref<Record<string, string>>({})
+
+function place() {
+  const el = trigger.value
+  if (!el) return
+  const r = el.getBoundingClientRect()
+  menuStyle.value = {
+    top: `${r.bottom + 6}px`,
+    left: `${r.left}px`,
+    width: `${r.width}px`,
+  }
+}
+
+function toggle() {
+  open.value = !open.value
+  if (open.value) {
+    showCreate.value = false
+    nextTick(place)
+  }
+}
+
+function reposition() {
+  if (open.value) place()
+}
+
+onMounted(() => {
+  window.addEventListener('resize', reposition)
+  window.addEventListener('scroll', reposition, true)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', reposition)
+  window.removeEventListener('scroll', reposition, true)
+})
 
 const rulesets = [
   { value: 'dnd5e_2024', label: 'D&D 5e (2024)' },
@@ -40,7 +74,7 @@ async function create() {
 
 <template>
   <div class="cs">
-    <button class="campaign" @click="open = !open">
+    <button ref="trigger" class="campaign" @click="toggle">
       <span class="cv" aria-hidden="true" />
       <span class="ct">
         <b>{{ campaign.current?.name || 'Aetherwright' }}</b>
@@ -51,11 +85,9 @@ async function create() {
 
     <Teleport to="body">
       <div v-if="open" class="cs-backdrop" @click="open = false" />
-    </Teleport>
-
-    <Transition name="drop">
-      <div v-if="open" class="menu">
-        <div class="grp">{{ t('campaign.switch') }}</div>
+      <Transition name="drop">
+        <div v-if="open" class="menu" :style="menuStyle">
+          <div class="grp">{{ t('campaign.switch') }}</div>
         <button
           v-for="c in campaign.campaigns"
           :key="c.id"
@@ -85,8 +117,9 @@ async function create() {
             {{ creating ? t('campaign.creating') : t('campaign.create') }}
           </AwButton>
         </div>
-      </div>
-    </Transition>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -125,11 +158,8 @@ async function create() {
 .cs-backdrop { position: fixed; inset: 0; z-index: 54; }
 
 .menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-  z-index: 55;
+  position: fixed;
+  z-index: 56;
   background: var(--surface-2);
   border: 1px solid var(--line-strong);
   border-radius: 14px;
