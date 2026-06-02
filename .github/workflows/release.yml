@@ -1,0 +1,58 @@
+name: Release Foundry Module
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: foundry-module
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Resolve version & URLs from tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          BASE="${{ github.server_url }}/${{ github.repository }}"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "MODULE_URL=$BASE" >> "$GITHUB_ENV"
+          echo "MANIFEST=$BASE/releases/latest/download/module.json" >> "$GITHUB_ENV"
+          echo "DOWNLOAD=$BASE/releases/download/${GITHUB_REF_NAME}/module.zip" >> "$GITHUB_ENV"
+
+      - name: Stamp version into package.json & module.json
+        run: |
+          node -e "
+            const fs = require('fs');
+            for (const f of ['package.json', 'public/module.json']) {
+              const m = JSON.parse(fs.readFileSync(f, 'utf8'));
+              m.version = process.env.VERSION;
+              if (f.endsWith('module.json')) {
+                m.url = process.env.MODULE_URL;
+                m.manifest = process.env.MANIFEST;
+                m.download = process.env.DOWNLOAD;
+              }
+              fs.writeFileSync(f, JSON.stringify(m, null, 2) + '\n');
+            }
+          "
+
+      - run: bun install
+      - run: bun run build
+
+      - name: Zip module
+        run: cd dist && zip -r ../module.zip .
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            foundry-module/dist/module.json
+            foundry-module/module.zip
