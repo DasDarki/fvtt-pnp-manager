@@ -21,6 +21,27 @@ export default defineNuxtConfig({
   icon: {
     mode: 'svg',
     serverBundle: 'local',
+    // Eigener Server-Endpoint NICHT unter /api (das routet der Proxy aufs Backend).
+    localApiEndpoint: '/_nuxt_icon',
+    // Alle genutzten Icons in den Client-Bundle → kein Runtime-Fetch, kein Hydration-Mismatch.
+    clientBundle: {
+      scan: true,
+      sizeLimitKb: 512,
+      icons: [
+        'lucide:activity', 'lucide:arrow-down-up', 'lucide:arrow-left', 'lucide:arrow-right-left',
+        'lucide:boxes', 'lucide:castle', 'lucide:check', 'lucide:check-check', 'lucide:chevrons-up-down',
+        'lucide:circle-alert', 'lucide:copy', 'lucide:cpu', 'lucide:crown', 'lucide:external-link',
+        'lucide:flame', 'lucide:flask-conical', 'lucide:folder', 'lucide:folder-sync', 'lucide:folder-tree',
+        'lucide:gem', 'lucide:ghost', 'lucide:hexagon', 'lucide:image', 'lucide:key-round', 'lucide:layers',
+        'lucide:layout-dashboard', 'lucide:library', 'lucide:link', 'lucide:loader-circle', 'lucide:log-in',
+        'lucide:log-out', 'lucide:menu', 'lucide:moon-star', 'lucide:mouse-pointer-2', 'lucide:palette',
+        'lucide:pin', 'lucide:plug-zap', 'lucide:plus', 'lucide:refresh-cw', 'lucide:save', 'lucide:scroll',
+        'lucide:scroll-text', 'lucide:search', 'lucide:search-x', 'lucide:settings-2', 'lucide:sparkles',
+        'lucide:star', 'lucide:sun', 'lucide:sword', 'lucide:tags', 'lucide:trash', 'lucide:trash-2',
+        'lucide:trending-up', 'lucide:triangle-alert', 'lucide:user', 'lucide:user-plus', 'lucide:users',
+        'lucide:wand-2', 'lucide:wand-sparkles', 'lucide:x',
+      ],
+    },
   },
 
   typescript: {
