@@ -33,11 +33,11 @@ services:
       PUBLIC_BASE_URL: ${PUBLIC_API_URL:-http://localhost:8080}
     volumes:
       - uploads:/data/uploads
+    expose:
+      - "8080"
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "8080:8080"
 
   frontend:
     build: ./frontend
@@ -48,10 +48,10 @@ services:
       # Backend-Basis (PUBLIC_API_URL enthält bereits das /api-Präfix) + /v1.
       # Das Backend lauscht sowohl auf /api/v1 als auch auf /v1 (nach Strip).
       NUXT_PUBLIC_API_BASE: "${PUBLIC_API_URL:-http://localhost:8080}/v1"
+    expose:
+      - "3000"
     depends_on:
       - backend
-    ports:
-      - "3000:3000"
 
 volumes:
   pgdata:
