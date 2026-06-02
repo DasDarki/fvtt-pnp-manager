@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: aetherwright
+      POSTGRES_PASSWORD: aetherwright
+      POSTGRES_DB: aetherwright
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aetherwright -d aetherwright"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  api:
+    build: .
+    environment:
+      PORT: "8080"
+      DATABASE_URL: "postgres://aetherwright:aetherwright@db:5432/aetherwright?sslmode=disable"
+      JWT_SECRET: "change-me-in-production"
+      ACCESS_TTL: "15m"
+      REFRESH_TTL: "720h"
+      CORS_ORIGINS: "http://localhost:3000"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      OPENAI_IMAGE_MODEL: "dall-e-3"
+      UPLOAD_DIR: "/data/uploads"
+      PUBLIC_BASE_URL: "http://localhost:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads:/data/uploads
+
+volumes:
+  pgdata:
+  uploads:

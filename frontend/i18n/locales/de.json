@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "tagline": "Arkanes Kampagnen-Deck",
+    "description": "Charaktere, Szenen, Items und Erinnerungen für deine FoundryVTT-Kampagne – mit Dall·E-Bildern und Ein-Klick-Sync nach The Forge."
+  },
+  "brand": {
+    "deck": "Arkanes Kommando-Deck"
+  },
+  "home": {
+    "eyebrow": "Foundry · Dall·E · Obsidian — vereint",
+    "lead": "Ein arkanes Kommando-Deck für deine Kampagne. Charaktere, Szenen, Items und Erinnerungen — geschmiedet aus Neon, Nebel und Glas.",
+    "enter": "Deck betreten",
+    "docs": "Dokumentation"
+  },
+  "a11y": {
+    "toggleLang": "Sprache wechseln",
+    "toggleTheme": "Farbschema wechseln"
+  },
+  "nav": {
+    "group": { "campaign": "Kampagne", "system": "System" },
+    "dashboard": "Dashboard",
+    "characters": "Charaktere",
+    "allies": "Verbündete",
+    "foes": "Widersacher",
+    "scenes": "Szenen",
+    "items": "Items",
+    "images": "Bilder",
+    "memories": "Erinnerungen",
+    "dalle": "Bild-Atelier",
+    "providers": "Bild-Provider",
+    "foundry": "Foundry-Anbindung"
+  },
+  "sidebar": {
+    "connected": "Foundry verbunden",
+    "role": "Spielleiter",
+    "logout": "Abmelden",
+    "campaign": "Kampagne"
+  },
+  "login": {
+    "title": "Anmelden",
+    "welcome": "Willkommen zurück",
+    "create": "Deck erschaffen",
+    "subtitle": "Betritt dein arkanes Kommando-Deck.",
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "error": "Anmeldung fehlgeschlagen",
+    "working": "Einen Moment …",
+    "submitLogin": "Anmelden",
+    "submitRegister": "Konto erstellen",
+    "toRegister": "Noch kein Konto? Registrieren",
+    "toLogin": "Bereits ein Konto? Anmelden"
+  },
+  "search": {
+    "placeholder": "Suche über alles …",
+    "entity": "Suchen …"
+  },
+  "common": { "entries": "Einträge", "yes": "Ja", "no": "Nein" },
+  "filter": { "all": "Alle" },
+  "status": { "alive": "Lebend", "dead": "Tot", "hunted": "Gejagt", "unknown": "Unbekannt" },
+  "rarity": {
+    "common": "Gewöhnlich", "uncommon": "Ungewöhnlich", "rare": "Selten",
+    "epic": "Sehr selten", "legendary": "Legendär", "artifact": "Artefakt"
+  },
+  "item": {
+    "attuned": "Eingestimmt",
+    "back": "Zurück zu Items",
+    "notFound": "Item nicht gefunden.",
+    "type": "Typ",
+    "kind": "Art (Foundry)",
+    "rarity": "Seltenheit",
+    "value": "Wert (GP)",
+    "weight": "Gewicht",
+    "icon": "Icon (lucide)",
+    "description": "Beschreibung",
+    "image": "Bild",
+    "imagePrompt": "Bild-Prompt …",
+    "generateImage": "Bild generieren",
+    "synced": "✓ Als Item in Foundry angelegt"
+  },
+  "empty": {
+    "characters": "Keine Charaktere gefunden.",
+    "items": "Keine Items gefunden.",
+    "scenes": "Keine Szenen gefunden."
+  },
+  "actions": {
+    "create": "Erstellen",
+    "generate": "Bild generieren"
+  },
+  "palette": {
+    "placeholder": "Befehl oder Suche eingeben …",
+    "actions": "Aktionen",
+    "navigate": "Navigieren",
+    "open": "Öffnen",
+    "close": "Schließen",
+    "empty": "Keine Treffer.",
+    "action": {
+      "new-character": { "title": "Neuer Charakter", "sub": "Leeren Actor anlegen" },
+      "new-item": { "title": "Neues Item", "sub": "Item mit Seltenheit erstellen" },
+      "generate-image": { "title": "Bild generieren", "sub": "Dall·E Prompt öffnen" }
+    }
+  },
+  "stats": {
+    "characters": "Charaktere",
+    "scenes": "Szenen",
+    "items": "Items",
+    "memories": "Erinnerungen",
+    "new": "neu"
+  },
+  "critical": {
+    "badge": "Kritisch",
+    "ack": "Quittieren",
+    "more": "+{n} weitere kritische Hinweise"
+  },
+  "level": {
+    "info": "Info",
+    "notice": "Notiz",
+    "warning": "Warnung",
+    "critical": "Kritisch"
+  },
+  "folder": {
+    "none": "— (kein Ordner)",
+    "empty": "Keine Ordner eingelesen"
+  },
+  "tag": {
+    "title": "Tags",
+    "add": "Tag …",
+    "remove": "Entfernen",
+    "createNew": "„{name}“ erstellen"
+  },
+  "filterbar": {
+    "hasImage": "Mit Bild"
+  },
+  "sort": {
+    "recent": "Zuletzt",
+    "name": "Name A–Z"
+  },
+  "links": {
+    "title": "Verbindungen",
+    "dropHint": "Entität hierher ziehen, um zu verknüpfen",
+    "search": "Charaktere, Items, Szenen, Bilder …",
+    "remove": "Verbindung entfernen",
+    "empty": "Keine weiteren Entitäten."
+  },
+  "campaign": {
+    "switch": "Kampagne wechseln",
+    "new": "Neue Kampagne",
+    "manage": "Verwalten",
+    "namePlaceholder": "Name der Kampagne …",
+    "create": "Erstellen",
+    "creating": "Erstellt …",
+    "title": "Kampagnen",
+    "subtitle": "Erstelle, wechsle und verwalte deine Kampagnen — je mit eigenem Regelwerk.",
+    "ruleset": "Regelwerk",
+    "forgeRoot": "Forge-Root-Ordner",
+    "setActive": "Aktiv setzen",
+    "active": "Aktiv"
+  },
+  "image": {
+    "back": "Zurück zu Bildern",
+    "notFound": "Bild nicht gefunden.",
+    "pushAs": "Übertragen als",
+    "notes": "Notizen",
+    "notesPlaceholder": "Kontext, Anmerkung, Handout-Text …",
+    "image": "Bild",
+    "imagePrompt": "Bild-Prompt …",
+    "generateImage": "Bild generieren",
+    "synced": "✓ Nach Foundry übertragen",
+    "empty": "Noch keine Bilder.",
+    "noNotes": "Keine Notizen"
+  },
+  "scene": {
+    "back": "Zurück zu Szenen",
+    "notFound": "Szene nicht gefunden.",
+    "act": "Akt / Kapitel",
+    "status": "Status",
+    "tone": "Stimmung",
+    "description": "Beschreibung",
+    "image": "Map / Bild",
+    "imagePrompt": "Bild-Prompt …",
+    "generateImage": "Map generieren",
+    "synced": "✓ Als Szene in Foundry angelegt"
+  },
+  "memory": {
+    "new": "Neue Erinnerung",
+    "add": "Hinzufügen",
+    "saving": "Speichert …",
+    "titlePlaceholder": "Titel der Erinnerung …",
+    "bodyPlaceholder": "Details, Anmerkung, Erinnerung …",
+    "empty": "Noch keine Erinnerungen.",
+    "emptyChar": "Noch keine Erinnerungen an diesem Charakter.",
+    "emptyItem": "Noch keine Erinnerungen an diesem Item.",
+    "emptyScene": "Noch keine Erinnerungen an dieser Szene.",
+    "emptyImage": "Noch keine Erinnerungen an diesem Bild.",
+    "ack": "Quittieren",
+    "pin": "Anheften",
+    "delete": "Löschen"
+  },
+  "charType": {
+    "pc": "Spielercharakter",
+    "npc": "NSC",
+    "ally": "Verbündeter",
+    "foe": "Widersacher",
+    "neutral": "Neutral"
+  },
+  "editor": {
+    "back": "Zurück zu Charakteren",
+    "name": "Name",
+    "type": "Typ",
+    "status": "Status",
+    "preview": "Live-Vorschau",
+    "ruleset": "Regelwerk",
+    "syncState": "Sync-Status",
+    "save": "Speichern",
+    "saving": "Speichert …",
+    "saved": "Gespeichert ✓",
+    "delete": "Löschen",
+    "confirmDelete": "Wirklich löschen?",
+    "notFound": "Charakter nicht gefunden.",
+    "generating": "Generiert …",
+    "portrait": "Porträt",
+    "portraitPrompt": "Porträt-Prompt …",
+    "generatePortrait": "Porträt generieren",
+    "portraitHint": "Nutzt den globalen Kampagnen-Stil für einen einheitlichen Look.",
+    "sync": "Nach Foundry",
+    "folder": "Foundry-Ordner",
+    "syncing": "Synchronisiert …",
+    "synced": "✓ Als Actor in Foundry angelegt",
+    "notConnected": "Foundry nicht verbunden.",
+    "syncError": "Synchronisierung fehlgeschlagen."
+  },
+  "foundry": {
+    "title": "Foundry-Anbindung",
+    "subtitle": "Verbinde dein Modul und übertrage Charaktere mit einem Klick.",
+    "statusTitle": "Status",
+    "connected": "Verbunden",
+    "disconnected": "Gekoppelt, aber offline",
+    "notPaired": "Noch nicht gekoppelt",
+    "world": "Welt",
+    "lastSeen": "Zuletzt gesehen",
+    "refresh": "Aktualisieren",
+    "pairTitle": "Kopplung",
+    "pairHint": "Erzeuge einen einmaligen Token und trage ihn im Foundry-Modul ein.",
+    "generate": "Token erzeugen",
+    "regenerate": "Neuen Token erzeugen",
+    "tokenOnce": "⚠ Token nur jetzt sichtbar — kopieren und sicher aufbewahren.",
+    "relayUrl": "Relay-URL",
+    "token": "Pairing-Token",
+    "step1": "Modul „Aetherwright“ in Foundry installieren und aktivieren (v13).",
+    "step2": "Spieleinstellungen → Modul-Einstellungen → Aetherwright: Relay-URL & Token eintragen.",
+    "step3": "Das Modul verbindet sich automatisch — der Status oben wird grün.",
+    "foldersTitle": "Ordnerstruktur",
+    "foldersHint": "Liest die bestehenden Ordner aus FoundryVTT ein, damit neue Inhalte am richtigen Ort landen.",
+    "discover": "Aus Foundry einlesen",
+    "discovering": "Liest ein …",
+    "noFolders": "Noch keine Ordner eingelesen."
+  },
+  "dalle": {
+    "title": "Bild-Atelier",
+    "subtitle": "Bilder generieren — mit deiner Bild-KI, kohärent durch den globalen Stil.",
+    "providerTitle": "Bild-KI",
+    "providerHint": "Wähle einen Anbieter und hinterlege deinen eigenen API-Key (BYOK).",
+    "providerDefault": "Standard / Mock-Platzhalter",
+    "saveProvider": "KI speichern",
+    "keyPlaceholder": "API-Key eingeben …",
+    "keySet": "✓ Key gespeichert — leer lassen zum Behalten",
+    "byokNote": "Dein Key wird verschlüsselt gespeichert und nie an den Browser zurückgegeben.",
+    "global": "Global",
+    "styleTitle": "Globaler Stil",
+    "styleHint": "Wird auf jede Generierung in dieser Kampagne angewendet — für einen einheitlichen Look.",
+    "stylePlaceholder": "z.B. düsteres Ölgemälde, Kerzenlicht, entsättigt …",
+    "saveStyle": "Stil speichern",
+    "savingStyle": "Speichert …",
+    "styleSaved": "Gespeichert ✓",
+    "generateTitle": "Generieren",
+    "promptPlaceholder": "Beschreibe das Motiv … z.B. Porträt einer Tiefling-Schurkin mit silbernem Dolch",
+    "sizeSquare": "Quadrat",
+    "sizeWide": "Quer",
+    "sizeTall": "Hoch",
+    "generate": "Generieren",
+    "generating": "Generiert …",
+    "applied": "Angewandter Prompt",
+    "noStyle": "kein globaler Stil gesetzt",
+    "gallery": "Galerie",
+    "empty": "Noch keine Bilder generiert.",
+    "mock": "Mock",
+    "providerPick": "Bild-KI für diese Generierung",
+    "providerManage": "Schlüssel verwalten"
+  },
+  "providers": {
+    "title": "Bild-Provider",
+    "subtitle": "Hinterlege deine eigenen API-Keys (BYOK). Jeder Anbieter wird verfügbar, sobald ein Schlüssel gespeichert ist.",
+    "mock": "Standard · Mock",
+    "model": "Modell",
+    "key": "API-Key",
+    "keyPlaceholder": "API-Key eingeben …",
+    "keySet": "✓ Key gespeichert — leer lassen zum Behalten",
+    "byokNote": "Dein Key wird verschlüsselt gespeichert und nie an den Browser zurückgegeben.",
+    "save": "Speichern",
+    "saving": "Speichert …",
+    "saved": "Gespeichert ✓",
+    "remove": "Entfernen",
+    "configured": "Aktiv",
+    "notConfigured": "Kein Key",
+    "makeDefault": "Als Standard",
+    "default": "Standard",
+    "addKey": "Key hinzufügen",
+    "defaultTitle": "Standard-Provider",
+    "defaultHint": "Wird für neue Generierungen vorausgewählt (lokal gespeichert)."
+  },
+  "dash": {
+    "welcome": "Willkommen zurück, Spielleiter",
+    "campaign": "Kampagne",
+    "subtitle": "3 Erinnerungen warten auf dich, und eine Szene ist für die nächste Sitzung vorbereitet.",
+    "recent": "Zuletzt bearbeitet",
+    "viewAll": "Alle ansehen",
+    "preparedScene": "Vorbereitete Szene",
+    "openFoundry": "In Foundry öffnen",
+    "all": "Alle",
+    "quick": "Schnellzugriff",
+    "quickItem": {
+      "character": { "title": "Charakter", "sub": "Neu anlegen" },
+      "item": { "title": "Item", "sub": "Mit Seltenheit" },
+      "image": { "title": "Dall·E Bild", "sub": "Generieren" },
+      "sync": { "title": "Sync", "sub": "Nach Foundry" }
+    }
+  }
+}

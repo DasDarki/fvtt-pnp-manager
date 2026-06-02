@@ -1,0 +1,95 @@
+:root {
+  --void: #07060d;
+  --void-2: #0b0915;
+  --surface: rgba(23, 20, 38, 0.55);
+  --surface-2: rgba(30, 26, 48, 0.7);
+  --surface-solid: #15121f;
+  --ink: #ece9ff;
+  --ink-dim: #a39ec6;
+  --ink-faint: #6d688c;
+  --line: rgba(150, 138, 214, 0.16);
+  --line-strong: rgba(150, 138, 214, 0.32);
+  --primary: #46e8ff;
+  --primary-deep: #0bb7d4;
+  --secondary: #b768ff;
+  --magenta: #ff4fa3;
+  --gold: #ffc24d;
+  --emerald: #37e8a4;
+  --ember: #ff6a55;
+
+  --glow-primary: 0 0 28px rgba(70, 232, 255, 0.4);
+  --glow-secondary: 0 0 28px rgba(183, 104, 255, 0.4);
+  --glow-text: 0 0 18px rgba(70, 232, 255, 0.55);
+
+  --grad-arcane: linear-gradient(120deg, #46e8ff 0%, #b768ff 55%, #ff4fa3 100%);
+  --grad-ember: linear-gradient(120deg, #ffc24d, #ff6a55);
+
+  --shadow-panel: 0 24px 60px -28px rgba(0, 0, 0, 0.8), 0 1px 0 0 rgba(255, 255, 255, 0.04) inset;
+
+  --font-display: 'Cinzel', serif;
+  --font-deco: 'Cinzel Decorative', serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme='light'] {
+  --void: #e9e7f2;
+  --void-2: #f3f1f9;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-2: rgba(255, 255, 255, 0.86);
+  --surface-solid: #ffffff;
+  --ink: #191428;
+  --ink-dim: #564f72;
+  --ink-faint: #8e88a8;
+  --line: rgba(60, 40, 120, 0.14);
+  --line-strong: rgba(60, 40, 120, 0.26);
+  --primary: #008fb8;
+  --primary-deep: #006f93;
+  --secondary: #8a3df0;
+  --magenta: #d31a78;
+  --gold: #c98700;
+  --emerald: #0a9c69;
+  --ember: #d8452f;
+  --glow-primary: 0 0 22px rgba(0, 143, 184, 0.22);
+  --glow-secondary: 0 0 22px rgba(138, 61, 240, 0.22);
+  --glow-text: 0 0 1px rgba(0, 143, 184, 0.2);
+  --shadow-panel: 0 22px 48px -28px rgba(40, 30, 90, 0.5), 0 1px 0 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--void);
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(70, 232, 255, 0.25);
+  color: var(--ink);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

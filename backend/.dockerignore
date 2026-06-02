@@ -1,0 +1,8 @@
+/server
+/bin
+*.exe
+.env
+.env.*
+uploads
+*.log
+.git

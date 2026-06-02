@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - run: bun install
+      - run: bun run build
+
+      - name: Set version in manifest
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          node -e "const f='dist/module.json';const m=require('./'+f);m.version='${VERSION}';require('fs').writeFileSync(f,JSON.stringify(m,null,2))"
+
+      - name: Zip module
+        run: cd dist && zip -r ../module.zip . && cd ..
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/module.json
+            module.zip

@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+
+# Per-service ignores live in frontend/, backend/, foundry-module/

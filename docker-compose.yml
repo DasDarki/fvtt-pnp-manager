@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aetherwright}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aetherwright}
+      POSTGRES_DB: ${POSTGRES_DB:-aetherwright}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aetherwright} -d ${POSTGRES_DB:-aetherwright}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      PORT: "8080"
+      DATABASE_URL: "postgres://${POSTGRES_USER:-aetherwright}:${POSTGRES_PASSWORD:-aetherwright}@db:5432/${POSTGRES_DB:-aetherwright}?sslmode=disable"
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+      ACCESS_TTL: "15m"
+      REFRESH_TTL: "720h"
+      CORS_ORIGINS: ${PUBLIC_APP_URL:-http://localhost:3000}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_IMAGE_MODEL: ${OPENAI_IMAGE_MODEL:-dall-e-3}
+      UPLOAD_DIR: "/data/uploads"
+      # Externe Basis-URL des Backends INKL. evtl. Proxy-Pfad-Präfix (z.B. .../api).
+      # Daraus werden die Upload- und WebSocket-URLs gebaut.
+      PUBLIC_BASE_URL: ${PUBLIC_API_URL:-http://localhost:8080}
+    volumes:
+      - uploads:/data/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "3000"
+      # Backend-Basis (PUBLIC_API_URL enthält bereits das /api-Präfix) + /v1.
+      # Das Backend lauscht sowohl auf /api/v1 als auch auf /v1 (nach Strip).
+      NUXT_PUBLIC_API_BASE: "${PUBLIC_API_URL:-http://localhost:8080}/v1"
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
+  uploads:

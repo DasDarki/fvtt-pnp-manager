@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "tagline": "Arcane Campaign Deck",
+    "description": "Characters, scenes, items and memories for your FoundryVTT campaign – with Dall·E art and one-click sync to The Forge."
+  },
+  "brand": {
+    "deck": "Arcane Command Deck"
+  },
+  "home": {
+    "eyebrow": "Foundry · Dall·E · Obsidian — united",
+    "lead": "An arcane command deck for your campaign. Characters, scenes, items and memories — forged from neon, smoke and glass.",
+    "enter": "Enter the deck",
+    "docs": "Documentation"
+  },
+  "a11y": {
+    "toggleLang": "Switch language",
+    "toggleTheme": "Switch color scheme"
+  },
+  "nav": {
+    "group": { "campaign": "Campaign", "system": "System" },
+    "dashboard": "Dashboard",
+    "characters": "Characters",
+    "allies": "Allies",
+    "foes": "Adversaries",
+    "scenes": "Scenes",
+    "items": "Items",
+    "images": "Images",
+    "memories": "Memories",
+    "dalle": "Image Studio",
+    "providers": "Image Providers",
+    "foundry": "Foundry Link"
+  },
+  "sidebar": {
+    "connected": "Foundry connected",
+    "role": "Game Master",
+    "logout": "Sign out",
+    "campaign": "Campaign"
+  },
+  "login": {
+    "title": "Sign in",
+    "welcome": "Welcome back",
+    "create": "Forge your deck",
+    "subtitle": "Enter your arcane command deck.",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "error": "Sign-in failed",
+    "working": "One moment …",
+    "submitLogin": "Sign in",
+    "submitRegister": "Create account",
+    "toRegister": "No account yet? Register",
+    "toLogin": "Already have an account? Sign in"
+  },
+  "search": {
+    "placeholder": "Search everything …",
+    "entity": "Search …"
+  },
+  "common": { "entries": "entries", "yes": "Yes", "no": "No" },
+  "filter": { "all": "All" },
+  "status": { "alive": "Alive", "dead": "Dead", "hunted": "Hunted", "unknown": "Unknown" },
+  "rarity": {
+    "common": "Common", "uncommon": "Uncommon", "rare": "Rare",
+    "epic": "Very rare", "legendary": "Legendary", "artifact": "Artifact"
+  },
+  "item": {
+    "attuned": "Attuned",
+    "back": "Back to items",
+    "notFound": "Item not found.",
+    "type": "Type",
+    "kind": "Kind (Foundry)",
+    "rarity": "Rarity",
+    "value": "Value (GP)",
+    "weight": "Weight",
+    "icon": "Icon (lucide)",
+    "description": "Description",
+    "image": "Image",
+    "imagePrompt": "Image prompt …",
+    "generateImage": "Generate image",
+    "synced": "✓ Created as item in Foundry"
+  },
+  "empty": {
+    "characters": "No characters found.",
+    "items": "No items found.",
+    "scenes": "No scenes found."
+  },
+  "actions": {
+    "create": "Create",
+    "generate": "Generate image"
+  },
+  "palette": {
+    "placeholder": "Type a command or search …",
+    "actions": "Actions",
+    "navigate": "Navigate",
+    "open": "Open",
+    "close": "Close",
+    "empty": "No matches.",
+    "action": {
+      "new-character": { "title": "New character", "sub": "Create an empty actor" },
+      "new-item": { "title": "New item", "sub": "Create an item with rarity" },
+      "generate-image": { "title": "Generate image", "sub": "Open Dall·E prompt" }
+    }
+  },
+  "stats": {
+    "characters": "Characters",
+    "scenes": "Scenes",
+    "items": "Items",
+    "memories": "Memories",
+    "new": "new"
+  },
+  "critical": {
+    "badge": "Critical",
+    "ack": "Acknowledge",
+    "more": "+{n} more critical alerts"
+  },
+  "level": {
+    "info": "Info",
+    "notice": "Note",
+    "warning": "Warning",
+    "critical": "Critical"
+  },
+  "folder": {
+    "none": "— (no folder)",
+    "empty": "No folders read"
+  },
+  "tag": {
+    "title": "Tags",
+    "add": "Tag …",
+    "remove": "Remove",
+    "createNew": "Create \"{name}\""
+  },
+  "filterbar": {
+    "hasImage": "With image"
+  },
+  "sort": {
+    "recent": "Recent",
+    "name": "Name A–Z"
+  },
+  "links": {
+    "title": "Connections",
+    "dropHint": "Drag an entity here to link it",
+    "search": "Characters, items, scenes, images …",
+    "remove": "Remove connection",
+    "empty": "No more entities."
+  },
+  "campaign": {
+    "switch": "Switch campaign",
+    "new": "New campaign",
+    "manage": "Manage",
+    "namePlaceholder": "Campaign name …",
+    "create": "Create",
+    "creating": "Creating …",
+    "title": "Campaigns",
+    "subtitle": "Create, switch and manage your campaigns — each with its own ruleset.",
+    "ruleset": "Ruleset",
+    "forgeRoot": "Forge root folder",
+    "setActive": "Set active",
+    "active": "Active"
+  },
+  "image": {
+    "back": "Back to images",
+    "notFound": "Image not found.",
+    "pushAs": "Push as",
+    "notes": "Notes",
+    "notesPlaceholder": "Context, note, handout text …",
+    "image": "Image",
+    "imagePrompt": "Image prompt …",
+    "generateImage": "Generate image",
+    "synced": "✓ Pushed to Foundry",
+    "empty": "No images yet.",
+    "noNotes": "No notes"
+  },
+  "scene": {
+    "back": "Back to scenes",
+    "notFound": "Scene not found.",
+    "act": "Act / Chapter",
+    "status": "Status",
+    "tone": "Tone",
+    "description": "Description",
+    "image": "Map / Image",
+    "imagePrompt": "Image prompt …",
+    "generateImage": "Generate map",
+    "synced": "✓ Created as scene in Foundry"
+  },
+  "memory": {
+    "new": "New memory",
+    "add": "Add",
+    "saving": "Saving …",
+    "titlePlaceholder": "Memory title …",
+    "bodyPlaceholder": "Details, note, reminder …",
+    "empty": "No memories yet.",
+    "emptyChar": "No memories on this character yet.",
+    "emptyItem": "No memories on this item yet.",
+    "emptyScene": "No memories on this scene yet.",
+    "emptyImage": "No memories on this image yet.",
+    "ack": "Acknowledge",
+    "pin": "Pin",
+    "delete": "Delete"
+  },
+  "charType": {
+    "pc": "Player character",
+    "npc": "NPC",
+    "ally": "Ally",
+    "foe": "Adversary",
+    "neutral": "Neutral"
+  },
+  "editor": {
+    "back": "Back to characters",
+    "name": "Name",
+    "type": "Type",
+    "status": "Status",
+    "preview": "Live preview",
+    "ruleset": "Ruleset",
+    "syncState": "Sync state",
+    "save": "Save",
+    "saving": "Saving …",
+    "saved": "Saved ✓",
+    "delete": "Delete",
+    "confirmDelete": "Really delete?",
+    "notFound": "Character not found.",
+    "generating": "Generating …",
+    "portrait": "Portrait",
+    "portraitPrompt": "Portrait prompt …",
+    "generatePortrait": "Generate portrait",
+    "portraitHint": "Uses the global campaign style for a consistent look.",
+    "sync": "To Foundry",
+    "folder": "Foundry folder",
+    "syncing": "Syncing …",
+    "synced": "✓ Created as actor in Foundry",
+    "notConnected": "Foundry not connected.",
+    "syncError": "Sync failed."
+  },
+  "foundry": {
+    "title": "Foundry Link",
+    "subtitle": "Connect your module and push characters with one click.",
+    "statusTitle": "Status",
+    "connected": "Connected",
+    "disconnected": "Paired, but offline",
+    "notPaired": "Not paired yet",
+    "world": "World",
+    "lastSeen": "Last seen",
+    "refresh": "Refresh",
+    "pairTitle": "Pairing",
+    "pairHint": "Generate a one-time token and enter it in the Foundry module.",
+    "generate": "Generate token",
+    "regenerate": "Generate new token",
+    "tokenOnce": "⚠ Token shown only now — copy and keep it safe.",
+    "relayUrl": "Relay URL",
+    "token": "Pairing token",
+    "step1": "Install and enable the \"Aetherwright\" module in Foundry (v13).",
+    "step2": "Game Settings → Module Settings → Aetherwright: enter relay URL & token.",
+    "step3": "The module connects automatically — the status above turns green.",
+    "foldersTitle": "Folder structure",
+    "foldersHint": "Reads the existing folders from FoundryVTT so new content lands in the right place.",
+    "discover": "Read from Foundry",
+    "discovering": "Reading …",
+    "noFolders": "No folders read yet."
+  },
+  "dalle": {
+    "title": "Image Studio",
+    "subtitle": "Generate images — with your image AI of choice, coherent through the global style.",
+    "providerTitle": "Image AI",
+    "providerHint": "Pick a provider and bring your own API key (BYOK).",
+    "providerDefault": "Default / Mock placeholder",
+    "saveProvider": "Save AI",
+    "keyPlaceholder": "Enter API key …",
+    "keySet": "✓ Key stored — leave empty to keep",
+    "byokNote": "Your key is stored encrypted and never returned to the browser.",
+    "global": "Global",
+    "styleTitle": "Global style",
+    "styleHint": "Applied to every generation in this campaign — for a consistent look.",
+    "stylePlaceholder": "e.g. dark oil painting, candlelight, desaturated …",
+    "saveStyle": "Save style",
+    "savingStyle": "Saving …",
+    "styleSaved": "Saved ✓",
+    "generateTitle": "Generate",
+    "promptPlaceholder": "Describe the subject … e.g. portrait of a tiefling rogue with a silver dagger",
+    "sizeSquare": "Square",
+    "sizeWide": "Wide",
+    "sizeTall": "Tall",
+    "generate": "Generate",
+    "generating": "Generating …",
+    "applied": "Applied prompt",
+    "noStyle": "no global style set",
+    "gallery": "Gallery",
+    "empty": "No images generated yet.",
+    "mock": "Mock",
+    "providerPick": "Image AI for this generation",
+    "providerManage": "Manage keys"
+  },
+  "providers": {
+    "title": "Image Providers",
+    "subtitle": "Store your own API keys (BYOK). Each provider becomes available the moment a key is saved.",
+    "mock": "Default · Mock",
+    "model": "Model",
+    "key": "API key",
+    "keyPlaceholder": "Enter API key …",
+    "keySet": "✓ Key stored — leave empty to keep",
+    "byokNote": "Your key is stored encrypted and never returned to the browser.",
+    "save": "Save",
+    "saving": "Saving …",
+    "saved": "Saved ✓",
+    "remove": "Remove",
+    "configured": "Active",
+    "notConfigured": "No key",
+    "makeDefault": "Set default",
+    "default": "Default",
+    "addKey": "Add key",
+    "defaultTitle": "Default provider",
+    "defaultHint": "Pre-selected for new generations (stored locally)."
+  },
+  "dash": {
+    "welcome": "Welcome back, Game Master",
+    "campaign": "Campaign",
+    "subtitle": "3 memories await you, and a scene is prepared for the next session.",
+    "recent": "Recently edited",
+    "viewAll": "View all",
+    "preparedScene": "Prepared scene",
+    "openFoundry": "Open in Foundry",
+    "all": "All",
+    "quick": "Quick access",
+    "quickItem": {
+      "character": { "title": "Character", "sub": "Create new" },
+      "item": { "title": "Item", "sub": "With rarity" },
+      "image": { "title": "Dall·E image", "sub": "Generate" },
+      "sync": { "title": "Sync", "sub": "To Foundry" }
+    }
+  }
+}
