@@ -119,8 +119,6 @@ const dotColor = computed(() => {
   font-size: 1.3rem;
   color: var(--ink);
   box-shadow: var(--glow-secondary);
-  padding: 2px;
-  overflow: hidden;
 
   &::before {
     content: '';
@@ -131,9 +129,10 @@ const dotColor = computed(() => {
   }
   span { position: relative; z-index: 1; }
   img {
-    position: relative;
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    inset: 2px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
     border-radius: 12px;
     object-fit: cover;
     display: block;
