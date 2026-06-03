@@ -15,8 +15,10 @@ Dedup (dasselbe Bild wird nicht doppelt gespeichert).
      (lokal: `http://localhost:8080/v1`).
    - **API-Key**: den eben erstellten `awk_…`-Key.
    - **Verbinden & Kampagnen laden** → Domain-Berechtigung erlauben → **aktive Kampagne** wählen → **Speichern**.
-4. Auf chatgpt.com über ein Bild hovern → Button **„Aetherwright"** oben links → Klick lädt hoch.
-   Grüner Haken = in der Bibliothek (bzw. war bereits vorhanden).
+4. Auf chatgpt.com über ein Bild hovern → Button **„Aetherwright"** oben links:
+   - **Klick** → fragt per Dialog nach einem **Namen** (vorausgefüllt mit dem ChatGPT-Titel) und lädt hoch.
+   - **Shift-Klick** → lädt sofort mit dem **ChatGPT-Namen** hoch (ohne Dialog).
+   - Grüner Haken = in der Bibliothek (bzw. war bereits vorhanden). Umbenennen geht später im Bild-Atelier.
 
 ## Wie es funktioniert
 

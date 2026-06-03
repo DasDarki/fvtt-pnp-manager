@@ -120,12 +120,19 @@ function makeButton(ref, src, name) {
   btn.type = 'button'
   btn.dataset.awRef = ref
   btn.dataset.state = doneRefs.has(ref) ? 'done' : 'idle'
-  btn.title = 'In Aetherwright-Bibliothek hochladen'
+  btn.title = 'Klick: mit Namen hochladen · Shift-Klick: ChatGPT-Name'
   btn.innerHTML = '<span class="aw-ic"></span><span class="aw-lbl">Aetherwright</span>'
   btn.addEventListener('click', (e) => {
     e.preventDefault()
     e.stopPropagation()
-    grab(btn, ref, src, name)
+    if (btn.dataset.state === 'done' || btn.dataset.state === 'loading') return
+    let finalName = name
+    if (!e.shiftKey) {
+      const entered = window.prompt('Name in der Aetherwright-Bibliothek:', name)
+      if (entered === null) return
+      finalName = entered.trim() || name
+    }
+    grab(btn, ref, src, finalName)
   })
   return btn
 }
