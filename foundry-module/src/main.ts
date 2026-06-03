@@ -199,7 +199,7 @@ function connect() {
   socket = new WebSocket(`${wsUrl}?token=${encodeURIComponent(token)}`)
 
   socket.addEventListener('open', () => {
-    ui.notifications?.info('Aetherwright verbunden.')
+    console.log('Aetherwright: relay connected')
     send({ type: 'hello', payload: { world: game.world?.id, version: game.version } })
   })
 
