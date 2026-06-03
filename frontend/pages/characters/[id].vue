@@ -32,6 +32,7 @@ const form = reactive({
 const loaded = ref(false)
 
 const portraitPrompt = ref('')
+const imageAlign = ref('center')
 
 watch(
   char,
@@ -42,6 +43,7 @@ watch(
     form.characterType = (c.characterType as CharacterType) || 'npc'
     form.folderId = c.folderId ?? null
     form.system = reactive(mergeSystemData(adapter.value.schema, c.systemData))
+    imageAlign.value = (c.systemData as any)?.imageAlign || 'center'
     portraitPrompt.value = `Porträt von ${c.name}`
     loaded.value = true
   },
@@ -84,6 +86,7 @@ const preview = computed<Character>(() => ({
   initial: (form.name || '?').charAt(0).toUpperCase(),
   ring: form.system.ring || 'conic-gradient(from 140deg,var(--primary),var(--secondary),var(--magenta),var(--primary))',
   image: char.value?.imageUrl || undefined,
+  imageAlign: imageAlign.value,
   stats: adapter.value.cardStats(form.system),
   hpPercent: adapter.value.hpPercent(form.system),
   critical: !!form.system.critical,
@@ -124,7 +127,7 @@ async function save() {
         status: form.status,
         characterType: form.characterType,
         folderId: form.folderId,
-        systemData: { ...form.system },
+        systemData: { ...form.system, imageAlign: imageAlign.value },
       },
     })
     saved.value = true
@@ -235,6 +238,7 @@ async function remove() {
             <AwButton icon="lucide:images" variant="soft" @click="pickerOpen = true">
               {{ t('editor.chooseImage') }}
             </AwButton>
+            <ImageAlignToggle v-if="preview.image" v-model="imageAlign" @update:model-value="save" />
             <small class="phint">{{ t('editor.portraitHint') }}</small>
           </div>
           <ImagePicker

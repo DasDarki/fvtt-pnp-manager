@@ -24,7 +24,12 @@ const dotColor = computed(() => {
 
     <div class="cc-top">
       <div class="avatar" :style="{ background: character.ring }">
-        <img v-if="character.image" :src="character.image" :alt="character.name" />
+        <img
+          v-if="character.image"
+          :src="character.image"
+          :alt="character.name"
+          :style="{ objectPosition: objPos(character.imageAlign) }"
+        />
         <span v-else>{{ character.initial }}</span>
         <i class="sdot" :style="{ background: dotColor, boxShadow: `0 0 10px ${dotColor}` }" />
       </div>
@@ -114,6 +119,8 @@ const dotColor = computed(() => {
   font-size: 1.3rem;
   color: var(--ink);
   box-shadow: var(--glow-secondary);
+  padding: 2px;
+  overflow: hidden;
 
   &::before {
     content: '';
@@ -124,10 +131,12 @@ const dotColor = computed(() => {
   }
   span { position: relative; z-index: 1; }
   img {
-    position: absolute;
-    inset: 2px;
+    position: relative;
+    width: 100%;
+    height: 100%;
     border-radius: 12px;
     object-fit: cover;
+    display: block;
     z-index: 1;
   }
   .sdot {

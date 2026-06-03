@@ -62,6 +62,32 @@ async function saveEdit(g: ApiAsset) {
   g.name = updated.name
 }
 
+const lightbox = ref<ApiAsset | null>(null)
+
+function mimeExt(mime: string) {
+  if (mime.includes('jpeg')) return 'jpg'
+  if (mime.includes('webp')) return 'webp'
+  if (mime.includes('gif')) return 'gif'
+  if (mime.includes('svg')) return 'svg'
+  return 'png'
+}
+async function download(g: ApiAsset) {
+  try {
+    const res = await fetch(g.url)
+    const blob = await res.blob()
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    const base = (g.name || g.prompt || 'aetherwright').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_').slice(0, 60) || 'image'
+    a.download = base + '.' + mimeExt(g.mime)
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000)
+  } catch {
+    window.open(g.url, '_blank')
+  }
+}
+
 const stylePrompt = ref('')
 const selectedPreset = ref('')
 watch(
@@ -236,10 +262,14 @@ async function generate() {
             <span v-if="g.source === 'mock'" class="mock">{{ t('dalle.mock') }}</span>
             <span v-else-if="g.source === 'upload'" class="up">{{ t('picker.uploaded') }}</span>
             <div class="acts">
+              <button class="act" :title="t('dalle.download')" @click="download(g)"><Icon name="lucide:download" /></button>
               <button class="act" :title="t('dalle.rename')" @click="startEdit(g)"><Icon name="lucide:pencil" /></button>
               <button class="act del" :title="t('actions.delete')" @click="removeAsset(g.id)"><Icon name="lucide:trash-2" /></button>
             </div>
-            <img :src="g.url" :alt="g.name || g.prompt" loading="lazy" />
+            <button class="zoom" :title="t('dalle.enlarge')" @click="lightbox = g">
+              <img :src="g.url" :alt="g.name || g.prompt" loading="lazy" />
+              <span class="zi"><Icon name="lucide:maximize-2" /></span>
+            </button>
             <figcaption>
               <input
                 v-if="editingId === g.id"
@@ -262,6 +292,24 @@ async function generate() {
         </div>
       </div>
     </div>
+
+    <Teleport to="body">
+      <Transition name="lb">
+        <div v-if="lightbox" class="lb" @click="lightbox = null">
+          <button class="lb-close" :title="t('picker.close')" @click="lightbox = null"><Icon name="lucide:x" /></button>
+          <div class="lb-inner" @click.stop>
+            <img :src="lightbox.url" :alt="lightbox.name || lightbox.prompt" />
+            <div class="lb-bar">
+              <div class="lb-meta">
+                <b>{{ lightbox.name || lightbox.prompt || t('dalle.untitled') }}</b>
+                <small v-if="lightbox.prompt && lightbox.name">{{ lightbox.prompt }}</small>
+              </div>
+              <AwButton icon="lucide:download" variant="soft" @click="download(lightbox)">{{ t('dalle.download') }}</AwButton>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -445,6 +493,24 @@ select.inp { cursor: pointer; appearance: none; }
 
   &:hover { transform: translateY(-4px); box-shadow: 0 26px 50px -26px #000, var(--glow-secondary); }
   &:hover .acts { opacity: 1; }
+  &:hover .zi { opacity: 1; }
+  .zoom { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; position: relative; }
+  .zi {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: rgba(8, 6, 14, 0.7);
+    border: 1px solid var(--line-strong);
+    color: var(--ink-dim);
+    opacity: 0;
+    transition: 0.2s;
+    :deep(svg) { width: 13px; height: 13px; }
+  }
   img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--void-2); }
   .mock,
   .up {
@@ -511,6 +577,64 @@ select.inp { cursor: pointer; appearance: none; }
 }
 .spin { animation: spin 0.9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background: rgba(4, 3, 10, 0.82);
+  backdrop-filter: blur(6px);
+}
+.lb-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: min(1100px, 92vw);
+  max-height: 92vh;
+  img {
+    max-width: 100%;
+    max-height: 76vh;
+    object-fit: contain;
+    border-radius: 14px;
+    border: 1px solid var(--line-strong);
+    box-shadow: 0 40px 80px -30px #000;
+    background: var(--void-2);
+  }
+}
+.lb-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface-2);
+  .lb-meta { flex: 1; min-width: 0; }
+  .lb-meta b { font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; display: block; }
+  .lb-meta small { font-size: 0.74rem; color: var(--ink-faint); display: block; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+.lb-close {
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: 0.2s;
+  :deep(svg) { width: 18px; height: 18px; }
+  &:hover { color: var(--ember); border-color: var(--ember); }
+}
+.lb-enter-active, .lb-leave-active { transition: opacity 0.22s; }
+.lb-enter-from, .lb-leave-to { opacity: 0; }
 
 @media (max-width: 1000px) {
   .cols { grid-template-columns: 1fr; }

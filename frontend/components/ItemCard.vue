@@ -19,7 +19,7 @@ const accent = computed(() => rarityColor[props.item.rarity])
   <article class="item" :style="{ '--c': accent }">
     <div class="top">
       <span class="ibox">
-        <img v-if="item.image" :src="item.image" :alt="item.name" />
+        <img v-if="item.image" :src="item.image" :alt="item.name" :style="{ objectPosition: objPos(item.imageAlign) }" />
         <Icon v-else :name="item.icon" />
       </span>
       <Icon v-if="item.attuned" name="lucide:link" class="attune" :title="t('item.attuned')" />

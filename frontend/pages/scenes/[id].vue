@@ -41,6 +41,7 @@ const form = reactive({
 })
 const loaded = ref(false)
 const imagePrompt = ref('')
+const imageAlign = ref('center')
 
 watch(
   scene,
@@ -51,6 +52,7 @@ watch(
     form.sceneStatus = s.sceneStatus || 'draft'
     form.folderId = s.folderId ?? null
     form.system = reactive({ act: s.systemData?.act || '', tone: (s.systemData?.tone as SceneTone) || 'arcane' })
+    imageAlign.value = (s.systemData as any)?.imageAlign || 'center'
     imagePrompt.value = `${s.name}, Battlemap von oben, top-down`
     loaded.value = true
   },
@@ -69,6 +71,7 @@ const preview = computed<SceneSummary>(() => ({
   extra: 0,
   tone: form.system.tone,
   image: scene.value?.imageUrl || undefined,
+  imageAlign: imageAlign.value,
 }))
 
 const saving = ref(false)
@@ -84,7 +87,7 @@ async function save() {
         summary: form.summary,
         sceneStatus: form.sceneStatus,
         folderId: form.folderId,
-        systemData: { act: form.system.act, tone: form.system.tone, status: statusLabels[form.sceneStatus] },
+        systemData: { act: form.system.act, tone: form.system.tone, status: statusLabels[form.sceneStatus], imageAlign: imageAlign.value },
       },
     })
     saved.value = true
@@ -216,6 +219,7 @@ async function delMem(mid: string) {
             <AwButton icon="lucide:images" variant="soft" @click="pickerOpen = true">
               {{ t('editor.chooseImage') }}
             </AwButton>
+            <ImageAlignToggle v-if="preview.image" v-model="imageAlign" @update:model-value="save" />
             <small class="phint">{{ t('editor.portraitHint') }}</small>
           </div>
           <ImagePicker

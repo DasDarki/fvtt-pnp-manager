@@ -11,10 +11,11 @@ import (
 )
 
 type imageInput struct {
-	Name     string     `json:"name"`
-	Notes    string     `json:"notes"`
-	PushAs   string     `json:"pushAs"`
-	FolderID *uuid.UUID `json:"folderId"`
+	Name       string     `json:"name"`
+	Notes      string     `json:"notes"`
+	PushAs     string     `json:"pushAs"`
+	ImageAlign string     `json:"imageAlign"`
+	FolderID   *uuid.UUID `json:"folderId"`
 }
 
 func (h *Handler) ListImages(c *fiber.Ctx) error {
@@ -108,6 +109,9 @@ func (h *Handler) UpdateImage(c *fiber.Ctx) error {
 	}
 	if in.FolderID != nil {
 		im.FolderID = in.FolderID
+	}
+	if in.ImageAlign != "" {
+		im.ImageAlign = in.ImageAlign
 	}
 	im.Notes = in.Notes
 	im.SyncState = "dirty"

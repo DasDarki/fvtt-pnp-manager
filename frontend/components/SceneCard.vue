@@ -7,7 +7,7 @@ defineProps<{ scene: SceneSummary }>()
 <template>
   <article class="scene">
     <div class="bg" :class="`tone-${scene.tone || 'arcane'}`" aria-hidden="true" />
-    <img v-if="scene.image" class="map" :src="scene.image" :alt="scene.title" />
+    <img v-if="scene.image" class="map" :src="scene.image" :alt="scene.title" :style="{ objectPosition: objPos(scene.imageAlign) }" />
     <div class="veil" aria-hidden="true" />
     <div class="body">
       <div class="tagrow">

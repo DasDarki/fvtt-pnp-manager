@@ -139,6 +139,7 @@ type ImageEntry struct {
 	Name         string     `gorm:"not null" json:"name"`
 	AssetID      *uuid.UUID `gorm:"type:uuid" json:"assetId"`
 	ImageURL     string     `gorm:"-" json:"imageUrl"`
+	ImageAlign   string     `gorm:"default:center" json:"imageAlign"`
 	PushAs       string     `gorm:"default:empty_actor" json:"pushAs"`
 	Notes        string     `json:"notes"`
 	FoundryUUID  string     `json:"foundryUuid"`

@@ -26,6 +26,7 @@ export function toCharacterVM(a: ApiCharacter): Character {
     initial: (a.name || '?').charAt(0).toUpperCase(),
     ring: d.ring || ringFor(a.id),
     image: a.imageUrl || undefined,
+    imageAlign: d.imageAlign || 'center',
     stats: Array.isArray(d.stats) ? d.stats : [],
     hpPercent: typeof d.hpPercent === 'number' ? d.hpPercent : 100,
     critical: !!d.critical,
@@ -43,6 +44,7 @@ export function toItemVM(a: ApiItem): Item {
     attuned: a.attuned,
     note: a.summary,
     image: a.imageUrl || undefined,
+    imageAlign: d.imageAlign || 'center',
   }
 }
 
@@ -58,6 +60,7 @@ export function toSceneVM(a: ApiScene): SceneSummary {
     extra: typeof d.extra === 'number' ? d.extra : 0,
     tone: d.tone || 'arcane',
     image: a.imageUrl || undefined,
+    imageAlign: d.imageAlign || 'center',
   }
 }
 
@@ -66,6 +69,7 @@ export function toImageVM(a: ApiImage): ImageEntry {
     id: a.id,
     name: a.name,
     image: a.imageUrl || undefined,
+    imageAlign: a.imageAlign || 'center',
     pushAs: a.pushAs || 'empty_actor',
     notes: a.notes,
   }

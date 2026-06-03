@@ -33,6 +33,9 @@
   },
   "sidebar": {
     "connected": "Foundry verbunden",
+    "disconnected": "Foundry offline",
+    "notPaired": "Foundry nicht verbunden",
+    "tapToSetup": "Zum Einrichten tippen",
     "role": "Spielleiter",
     "logout": "Abmelden",
     "campaign": "Kampagne"
@@ -224,6 +227,7 @@
     "portraitPrompt": "Porträt-Prompt …",
     "generatePortrait": "Porträt generieren",
     "chooseImage": "Bild wählen",
+    "align": "Ausschnitt",
     "portraitHint": "Aus der Bibliothek wählen, hochladen oder neu generieren — alles im Kampagnen-Stil.",
     "sync": "Nach Foundry",
     "folder": "Foundry-Ordner",
@@ -251,6 +255,11 @@
     "ext1": "Lade die Aetherwright-Extension (Ordner extension/) als entpackte Erweiterung in Chrome.",
     "ext2": "Öffne das Extension-Popup, trag API-Basis-URL und den Key ein und wähle die aktive Kampagne.",
     "ext3": "Auf chatgpt.com erscheint an jedem Bild ein Button zum Hochladen in die Bibliothek."
+  },
+  "align": {
+    "top": "Oben",
+    "center": "Zentriert",
+    "bottom": "Unten"
   },
   "picker": {
     "title": "Bild wählen",
@@ -333,6 +342,8 @@
     "rename": "Umbenennen",
     "namePlaceholder": "Name …",
     "untitled": "Ohne Namen",
+    "download": "Herunterladen",
+    "enlarge": "Vergrößern",
     "empty": "Noch keine Bilder generiert.",
     "mock": "Mock",
     "providerPick": "Bild-KI für diese Generierung",

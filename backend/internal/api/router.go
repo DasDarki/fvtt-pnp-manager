@@ -70,6 +70,7 @@ func (h *Handler) registerAPI(api fiber.Router) {
 
 	p.Get("/campaigns", h.ListCampaigns)
 	p.Post("/campaigns", h.CreateCampaign)
+	p.Get("/campaigns/:id/stats", h.CampaignStats)
 	p.Get("/campaigns/:id", h.GetCampaign)
 	p.Patch("/campaigns/:id", h.UpdateCampaign)
 	p.Patch("/campaigns/:id/style", h.UpdateCampaignStyle)

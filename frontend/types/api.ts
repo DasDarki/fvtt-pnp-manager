@@ -87,6 +87,7 @@ export interface ApiImage {
   name: string
   notes: string
   pushAs: string
+  imageAlign?: string
   assetId?: string | null
   imageUrl?: string
   syncState?: string

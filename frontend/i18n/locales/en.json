@@ -33,6 +33,9 @@
   },
   "sidebar": {
     "connected": "Foundry connected",
+    "disconnected": "Foundry offline",
+    "notPaired": "Foundry not connected",
+    "tapToSetup": "Tap to set up",
     "role": "Game Master",
     "logout": "Sign out",
     "campaign": "Campaign"
@@ -224,6 +227,7 @@
     "portraitPrompt": "Portrait prompt …",
     "generatePortrait": "Generate portrait",
     "chooseImage": "Choose image",
+    "align": "Crop",
     "portraitHint": "Pick from the library, upload, or generate anew — all in the campaign style.",
     "sync": "To Foundry",
     "folder": "Foundry folder",
@@ -251,6 +255,11 @@
     "ext1": "Load the Aetherwright extension (extension/ folder) as an unpacked extension in Chrome.",
     "ext2": "Open the extension popup, enter the API base URL and key, and pick the active campaign.",
     "ext3": "On chatgpt.com a button appears on every image to upload it to the library."
+  },
+  "align": {
+    "top": "Top",
+    "center": "Center",
+    "bottom": "Bottom"
   },
   "picker": {
     "title": "Choose image",
@@ -333,6 +342,8 @@
     "rename": "Rename",
     "namePlaceholder": "Name …",
     "untitled": "Untitled",
+    "download": "Download",
+    "enlarge": "Enlarge",
     "empty": "No images generated yet.",
     "mock": "Mock",
     "providerPick": "Image AI for this generation",

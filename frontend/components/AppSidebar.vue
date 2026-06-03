@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const api = useApi()
 const ui = useUiStore()
 const auth = useAuthStore()
 const campaignStore = useCampaignStore()
@@ -7,6 +8,44 @@ const providerStore = useProviderStore()
 
 const userLabel = computed(() => auth.user?.name || auth.user?.email || 'Gast')
 const userInitial = computed(() => (auth.user?.name || auth.user?.email || '?').charAt(0).toUpperCase())
+
+interface FoundryStatus {
+  paired: boolean
+  connected: boolean
+  world?: string
+  version?: string
+}
+const foundry = ref<FoundryStatus | null>(null)
+const stats = ref<Record<string, number>>({})
+async function loadFoundry() {
+  if (!campaignStore.currentId) return
+  try {
+    foundry.value = await api<FoundryStatus>(`/campaigns/${campaignStore.currentId}/foundry`)
+  } catch {
+    foundry.value = null
+  }
+}
+async function loadStats() {
+  if (!campaignStore.currentId) return
+  try {
+    stats.value = await api<Record<string, number>>(`/campaigns/${campaignStore.currentId}/stats`)
+  } catch {
+    stats.value = {}
+  }
+}
+function refreshSidebar() {
+  loadFoundry()
+  loadStats()
+}
+let foundryTimer: ReturnType<typeof setInterval> | null = null
+onMounted(() => {
+  campaignStore.ensure().then(refreshSidebar).catch(() => {})
+  foundryTimer = setInterval(loadFoundry, 10000)
+})
+onBeforeUnmount(() => {
+  if (foundryTimer) clearInterval(foundryTimer)
+})
+watch(() => campaignStore.currentId, refreshSidebar)
 
 async function logout() {
   await auth.logout()
@@ -17,17 +56,13 @@ async function logout() {
 
 const primary = [
   { key: 'dashboard', icon: 'lucide:layout-dashboard', to: '/dashboard' },
-  { key: 'characters', icon: 'lucide:users', to: '/characters', count: 28 },
-]
-const tree = [
-  { key: 'allies', icon: 'lucide:folder', to: '#', count: 11 },
-  { key: 'foes', icon: 'lucide:folder', to: '#', count: 17 },
+  { key: 'characters', icon: 'lucide:users', to: '/characters' },
 ]
 const rest = [
-  { key: 'scenes', icon: 'lucide:castle', to: '/scenes', count: 9 },
-  { key: 'items', icon: 'lucide:gem', to: '/items', count: 54 },
-  { key: 'images', icon: 'lucide:image', to: '/images', count: 12 },
-  { key: 'memories', icon: 'lucide:sparkles', to: '/memories', count: 37 },
+  { key: 'scenes', icon: 'lucide:castle', to: '/scenes' },
+  { key: 'items', icon: 'lucide:gem', to: '/items' },
+  { key: 'images', icon: 'lucide:image', to: '/images' },
+  { key: 'memories', icon: 'lucide:sparkles', to: '/memories' },
 ]
 const system = [
   { key: 'dalle', icon: 'lucide:wand-sparkles', to: '/dalle' },
@@ -62,21 +97,13 @@ const system = [
       >
         <Icon :name="item.icon" />
         <span>{{ t(`nav.${item.key}`) }}</span>
-        <span v-if="item.count" class="count">{{ item.count }}</span>
+        <span v-if="stats[item.key] != null" class="count">{{ stats[item.key] }}</span>
       </NuxtLink>
-
-      <div class="tree">
-        <NuxtLink v-for="item in tree" :key="item.key" :to="item.to" class="nl sm" @click="ui.closeSidebar()">
-          <Icon :name="item.icon" />
-          <span>{{ t(`nav.${item.key}`) }}</span>
-          <span class="count">{{ item.count }}</span>
-        </NuxtLink>
-      </div>
 
       <NuxtLink v-for="item in rest" :key="item.key" :to="item.to" class="nl" active-class="on" @click="ui.closeSidebar()">
         <Icon :name="item.icon" />
         <span>{{ t(`nav.${item.key}`) }}</span>
-        <span class="count">{{ item.count }}</span>
+        <span v-if="stats[item.key] != null" class="count">{{ stats[item.key] }}</span>
       </NuxtLink>
 
       <div class="grp">{{ t('nav.group.system') }}</div>
@@ -87,13 +114,16 @@ const system = [
     </nav>
 
     <div class="sidefoot">
-      <div class="sync">
+      <NuxtLink to="/settings/foundry" class="sync" :class="{ on: foundry?.connected }" @click="ui.closeSidebar()">
         <span class="ld" />
-        <span>
-          <b>{{ t('sidebar.connected') }}</b>
-          <small>the-forge · v13</small>
+        <span class="st">
+          <b v-if="foundry?.connected">{{ t('sidebar.connected') }}</b>
+          <b v-else-if="foundry?.paired">{{ t('sidebar.disconnected') }}</b>
+          <b v-else>{{ t('sidebar.notPaired') }}</b>
+          <small v-if="foundry?.connected">{{ foundry.world || 'foundry' }} · v{{ foundry.version || '13' }}</small>
+          <small v-else>{{ t('sidebar.tapToSetup') }}</small>
         </span>
-      </div>
+      </NuxtLink>
       <div class="user">
         <span class="av" aria-hidden="true"><span>{{ userInitial }}</span></span>
         <span class="ui">
@@ -271,22 +301,31 @@ const system = [
     align-items: center;
     gap: 11px;
     padding: 11px 13px;
-    border: 1px solid rgba(55, 232, 164, 0.3);
+    border: 1px solid var(--line);
     border-radius: 12px;
-    background: rgba(55, 232, 164, 0.07);
+    background: var(--surface-2);
     margin-bottom: 12px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
 
+    .st { min-width: 0; }
     .ld {
       width: 9px;
       height: 9px;
       border-radius: 50%;
       flex: none;
-      background: var(--emerald);
-      box-shadow: 0 0 10px var(--emerald);
-      animation: blink 2s ease-in-out infinite;
+      background: var(--ink-faint);
     }
-    b { font-size: 0.78rem; color: var(--emerald); display: block; line-height: 1.2; }
+    b { font-size: 0.78rem; color: var(--ink-dim); display: block; line-height: 1.2; }
     small { font-size: 0.66rem; color: var(--ink-faint); font-family: var(--font-mono); }
+
+    &:hover { border-color: var(--line-strong); }
+    &.on {
+      border-color: rgba(55, 232, 164, 0.3);
+      background: rgba(55, 232, 164, 0.07);
+      .ld { background: var(--emerald); box-shadow: 0 0 10px var(--emerald); animation: blink 2s ease-in-out infinite; }
+      b { color: var(--emerald); }
+    }
   }
   .user {
     display: flex;

@@ -10,7 +10,7 @@ const pushLabel = computed(() => (props.image.pushAs === 'journal' ? 'Journal' :
 <template>
   <article class="ic">
     <div class="thumb">
-      <img v-if="image.image" :src="image.image" :alt="image.name" loading="lazy" />
+      <img v-if="image.image" :src="image.image" :alt="image.name" loading="lazy" :style="{ objectPosition: objPos(image.imageAlign) }" />
       <Icon v-else name="lucide:image" class="ph" />
       <span class="badge"><Icon :name="image.pushAs === 'journal' ? 'lucide:scroll-text' : 'lucide:user'" /> {{ pushLabel }}</span>
     </div>

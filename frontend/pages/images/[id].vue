@@ -27,6 +27,7 @@ const pushModes = [
 const form = reactive({ name: '', notes: '', pushAs: 'empty_actor', folderId: null as string | null })
 const loaded = ref(false)
 const imagePrompt = ref('')
+const imageAlign = ref('center')
 
 watch(
   image,
@@ -36,6 +37,7 @@ watch(
     form.notes = im.notes
     form.pushAs = im.pushAs || 'empty_actor'
     form.folderId = im.folderId ?? null
+    imageAlign.value = im.imageAlign || 'center'
     imagePrompt.value = im.name
     loaded.value = true
   },
@@ -49,6 +51,7 @@ const preview = computed<ImageEntry>(() => ({
   id,
   name: form.name || '—',
   image: image.value?.imageUrl || undefined,
+  imageAlign: imageAlign.value,
   pushAs: form.pushAs,
   notes: form.notes,
 }))
@@ -61,7 +64,7 @@ async function save() {
   try {
     await api(`/campaigns/${campaign.currentId}/images/${id}`, {
       method: 'PATCH',
-      body: { name: form.name, notes: form.notes, pushAs: form.pushAs, folderId: form.folderId },
+      body: { name: form.name, notes: form.notes, pushAs: form.pushAs, folderId: form.folderId, imageAlign: imageAlign.value },
     })
     saved.value = true
     setTimeout(() => (saved.value = false), 2500)
@@ -182,6 +185,7 @@ async function delMem(mid: string) {
             <AwButton icon="lucide:images" variant="soft" @click="pickerOpen = true">
               {{ t('editor.chooseImage') }}
             </AwButton>
+            <ImageAlignToggle v-if="preview.image" v-model="imageAlign" @update:model-value="save" />
             <small class="phint">{{ t('editor.portraitHint') }}</small>
           </div>
           <ImagePicker

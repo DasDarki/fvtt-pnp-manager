@@ -28,9 +28,11 @@ export default defineNuxtConfig({
       scan: true,
       sizeLimitKb: 512,
       icons: [
-        'lucide:activity', 'lucide:arrow-down-up', 'lucide:arrow-left', 'lucide:arrow-right-left',
+        'lucide:activity', 'lucide:align-vertical-justify-start', 'lucide:align-vertical-justify-center',
+        'lucide:align-vertical-justify-end', 'lucide:arrow-down-up', 'lucide:arrow-left', 'lucide:arrow-right-left',
         'lucide:boxes', 'lucide:castle', 'lucide:check', 'lucide:check-check', 'lucide:chevrons-up-down',
-        'lucide:circle-alert', 'lucide:copy', 'lucide:cpu', 'lucide:crown', 'lucide:external-link',
+        'lucide:circle-alert', 'lucide:copy', 'lucide:cpu', 'lucide:crown', 'lucide:download', 'lucide:external-link',
+        'lucide:maximize-2',
         'lucide:flame', 'lucide:flask-conical', 'lucide:folder', 'lucide:folder-sync', 'lucide:folder-tree',
         'lucide:gem', 'lucide:ghost', 'lucide:hexagon', 'lucide:image', 'lucide:image-up', 'lucide:images',
         'lucide:folder-plus', 'lucide:upload', 'lucide:key-round', 'lucide:layers',

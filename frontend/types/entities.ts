@@ -32,6 +32,7 @@ export interface Character {
   initial: string
   ring: string
   image?: string
+  imageAlign?: string
   stats: MiniStat[]
   hpPercent: number
   critical?: boolean
@@ -59,6 +60,7 @@ export interface Item {
   attuned?: boolean
   note?: string
   image?: string
+  imageAlign?: string
   tags?: TagRef[]
 }
 
@@ -66,6 +68,7 @@ export interface ImageEntry {
   id: string
   name: string
   image?: string
+  imageAlign?: string
   pushAs: string
   notes?: string
   tags?: TagRef[]
@@ -83,6 +86,7 @@ export interface SceneSummary {
   extra: number
   tone?: SceneTone
   image?: string
+  imageAlign?: string
   tags?: TagRef[]
 }
 

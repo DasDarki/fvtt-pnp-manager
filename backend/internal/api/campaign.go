@@ -24,6 +24,25 @@ func (h *Handler) ListCampaigns(c *fiber.Ctx) error {
 	return c.JSON(rows)
 }
 
+func (h *Handler) CampaignStats(c *fiber.Ctx) error {
+	cam, err := h.campaignFor(c, c.Params("id"))
+	if err != nil {
+		return fail(c, fiber.StatusNotFound, "campaign not found")
+	}
+	count := func(model any) int64 {
+		var n int64
+		h.db.Model(model).Where("campaign_id = ?", cam.ID).Count(&n)
+		return n
+	}
+	return c.JSON(fiber.Map{
+		"characters": count(&models.Character{}),
+		"items":      count(&models.Item{}),
+		"scenes":     count(&models.Scene{}),
+		"images":     count(&models.ImageEntry{}),
+		"memories":   count(&models.Memory{}),
+	})
+}
+
 func (h *Handler) CreateCampaign(c *fiber.Ctx) error {
 	var in campaignInput
 	if err := c.BodyParser(&in); err != nil {

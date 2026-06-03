@@ -30,6 +30,7 @@ const form = reactive({
 })
 const loaded = ref(false)
 const imagePrompt = ref('')
+const imageAlign = ref('center')
 
 const rarities: Rarity[] = ['common', 'uncommon', 'rare', 'epic', 'legendary', 'artifact']
 const kinds = [
@@ -57,6 +58,7 @@ watch(
       weight: it.systemData?.weight || 0,
       icon: it.systemData?.icon || 'lucide:gem',
     })
+    imageAlign.value = (it.systemData as any)?.imageAlign || 'center'
     imagePrompt.value = `${it.name}, magischer Gegenstand`
     loaded.value = true
   },
@@ -73,6 +75,7 @@ const preview = computed<Item>(() => ({
   icon: form.system.icon || 'lucide:gem',
   attuned: form.attuned,
   image: item.value?.imageUrl || undefined,
+  imageAlign: imageAlign.value,
 }))
 
 const saving = ref(false)
@@ -90,7 +93,7 @@ async function save() {
         attuned: form.attuned,
         summary: form.summary,
         folderId: form.folderId,
-        systemData: { ...form.system },
+        systemData: { ...form.system, imageAlign: imageAlign.value },
       },
     })
     saved.value = true
@@ -243,6 +246,7 @@ async function delMem(mid: string) {
             <AwButton icon="lucide:images" variant="soft" @click="pickerOpen = true">
               {{ t('editor.chooseImage') }}
             </AwButton>
+            <ImageAlignToggle v-if="preview.image" v-model="imageAlign" @update:model-value="save" />
             <small class="phint">{{ t('editor.portraitHint') }}</small>
           </div>
           <ImagePicker

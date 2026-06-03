@@ -47,8 +47,7 @@ onMounted(() => {
 }
 
 .content {
-  padding: 6px 30px 60px;
-  max-width: 1380px;
+  padding: 6px 34px 60px;
 }
 
 .menu {
