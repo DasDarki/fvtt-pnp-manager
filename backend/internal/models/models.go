@@ -150,6 +150,7 @@ type ImageEntry struct {
 type Asset struct {
 	Base
 	CampaignID  uuid.UUID  `gorm:"type:uuid;index;not null" json:"campaignId"`
+	Name        string     `json:"name"`
 	Kind        string     `json:"kind"`
 	Source      string     `json:"source"`
 	StorageURL  string     `json:"storageUrl"`

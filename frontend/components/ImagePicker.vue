@@ -138,7 +138,7 @@ async function generate() {
           <template v-if="tab === 'library'">
             <div v-if="loading" class="state">{{ t('picker.loading') }}</div>
             <div v-else-if="assets.length" class="grid">
-              <button v-for="a in assets" :key="a.id" class="cell" :title="a.prompt || a.source" @click="attach(a.id, a.url)">
+              <button v-for="a in assets" :key="a.id" class="cell" :title="a.name || a.prompt || a.source" @click="attach(a.id, a.url)">
                 <img :src="a.url" :alt="a.prompt" loading="lazy" />
                 <span v-if="a.source === 'upload'" class="tag up">{{ t('picker.uploaded') }}</span>
                 <span v-else-if="a.source === 'mock'" class="tag mock">Mock</span>

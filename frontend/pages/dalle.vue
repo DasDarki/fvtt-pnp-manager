@@ -43,6 +43,25 @@ async function removeAsset(id: string) {
   await refresh()
 }
 
+const editingId = ref('')
+const editName = ref('')
+function startEdit(g: ApiAsset) {
+  editingId.value = g.id
+  editName.value = g.name || g.prompt || ''
+  nextTick(() => document.getElementById('aw-rename-' + g.id)?.focus())
+}
+async function saveEdit(g: ApiAsset) {
+  if (editingId.value !== g.id) return
+  const name = editName.value.trim()
+  editingId.value = ''
+  if (name === (g.name || '')) return
+  const updated = await api<ApiAsset>(`/campaigns/${campaign.currentId}/assets/${g.id}`, {
+    method: 'PATCH',
+    body: { name },
+  })
+  g.name = updated.name
+}
+
 const stylePrompt = ref('')
 const selectedPreset = ref('')
 watch(
@@ -216,10 +235,23 @@ async function generate() {
           <figure v-for="g in gallery" :key="g.id" class="shot">
             <span v-if="g.source === 'mock'" class="mock">{{ t('dalle.mock') }}</span>
             <span v-else-if="g.source === 'upload'" class="up">{{ t('picker.uploaded') }}</span>
-            <button class="del" :title="t('actions.delete')" @click="removeAsset(g.id)"><Icon name="lucide:trash-2" /></button>
-            <img :src="g.url" :alt="g.prompt" loading="lazy" />
+            <div class="acts">
+              <button class="act" :title="t('dalle.rename')" @click="startEdit(g)"><Icon name="lucide:pencil" /></button>
+              <button class="act del" :title="t('actions.delete')" @click="removeAsset(g.id)"><Icon name="lucide:trash-2" /></button>
+            </div>
+            <img :src="g.url" :alt="g.name || g.prompt" loading="lazy" />
             <figcaption>
-              <p>{{ g.prompt || '—' }}</p>
+              <input
+                v-if="editingId === g.id"
+                :id="'aw-rename-' + g.id"
+                v-model="editName"
+                class="rename"
+                :placeholder="t('dalle.namePlaceholder')"
+                @keydown.enter="saveEdit(g)"
+                @keydown.escape="editingId = ''"
+                @blur="saveEdit(g)"
+              />
+              <p v-else class="title" @click="startEdit(g)">{{ g.name || g.prompt || t('dalle.untitled') }}</p>
               <small>{{ relativeTime(g.createdAt) }}</small>
             </figcaption>
           </figure>
@@ -412,7 +444,7 @@ select.inp { cursor: pointer; appearance: none; }
   transition: transform 0.3s, box-shadow 0.3s;
 
   &:hover { transform: translateY(-4px); box-shadow: 0 26px 50px -26px #000, var(--glow-secondary); }
-  &:hover .del { opacity: 1; }
+  &:hover .acts { opacity: 1; }
   img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--void-2); }
   .mock,
   .up {
@@ -428,11 +460,17 @@ select.inp { cursor: pointer; appearance: none; }
   }
   .mock { color: var(--gold); background: rgba(255, 194, 77, 0.14); border: 1px solid var(--gold); }
   .up { color: var(--emerald); background: rgba(55, 232, 164, 0.16); border: 1px solid var(--emerald); }
-  .del {
+  .acts {
     position: absolute;
     top: 8px;
     right: 8px;
     z-index: 2;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transition: 0.2s;
+  }
+  .act {
     display: grid;
     place-items: center;
     width: 28px;
@@ -442,14 +480,16 @@ select.inp { cursor: pointer; appearance: none; }
     background: rgba(8, 6, 14, 0.7);
     color: var(--ink-dim);
     cursor: pointer;
-    opacity: 0;
     transition: 0.2s;
     :deep(svg) { width: 14px; height: 14px; }
-    &:hover { color: var(--ember); border-color: var(--ember); }
+    &:hover { color: var(--primary); border-color: var(--primary); }
+    &.del:hover { color: var(--ember); border-color: var(--ember); }
   }
   figcaption {
     padding: 12px 14px;
-    p { font-size: 0.78rem; color: var(--ink-dim); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .title { font-size: 0.78rem; color: var(--ink-dim); cursor: text; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .title:hover { color: var(--ink); }
+    .rename { width: 100%; font-family: var(--font-body); font-size: 0.78rem; color: var(--ink); background: var(--surface-2); border: 1px solid var(--primary); border-radius: 8px; padding: 6px 9px; box-shadow: var(--glow-primary); &:focus { outline: 0; } }
     small { font-family: var(--font-mono); font-size: 0.62rem; color: var(--ink-faint); display: block; margin-top: 6px; }
   }
 }

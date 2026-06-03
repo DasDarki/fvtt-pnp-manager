@@ -14,6 +14,7 @@ import (
 type assetOut struct {
 	ID        uuid.UUID `json:"id"`
 	URL       string    `json:"url"`
+	Name      string    `json:"name"`
 	Mime      string    `json:"mime"`
 	Kind      string    `json:"kind"`
 	Source    string    `json:"source"`
@@ -31,7 +32,7 @@ var uploadExt = map[string]string{
 }
 
 func (h *Handler) toAssetOut(a models.Asset, prompt string) assetOut {
-	return assetOut{ID: a.ID, URL: a.StorageURL, Mime: a.Mime, Kind: a.Kind, Source: a.Source, Prompt: prompt, CreatedAt: a.CreatedAt}
+	return assetOut{ID: a.ID, URL: a.StorageURL, Name: a.Name, Mime: a.Mime, Kind: a.Kind, Source: a.Source, Prompt: prompt, CreatedAt: a.CreatedAt}
 }
 
 func normalizeImageMime(mime string) (string, string) {
@@ -51,8 +52,8 @@ func normalizeImageMime(mime string) (string, string) {
 	}
 }
 
-func (h *Handler) saveAssetBytes(camID uuid.UUID, data []byte, ext, mime, kind, source, ref string) (models.Asset, error) {
-	asset := models.Asset{CampaignID: camID, Kind: kind, Source: source, Mime: mime, SourceRef: ref}
+func (h *Handler) saveAssetBytes(camID uuid.UUID, data []byte, ext, mime, kind, source, ref, name string) (models.Asset, error) {
+	asset := models.Asset{CampaignID: camID, Name: strings.TrimSpace(name), Kind: kind, Source: source, Mime: mime, SourceRef: ref}
 	h.db.Create(&asset)
 	filename := asset.ID.String() + "." + ext
 	if err := os.WriteFile(filepath.Join(h.cfg.UploadDir, filename), data, 0o644); err != nil {
@@ -103,7 +104,13 @@ func (h *Handler) UploadAsset(c *fiber.Ctx) error {
 		return fail(c, fiber.StatusBadRequest, "unsupported file type")
 	}
 
-	asset := models.Asset{CampaignID: cam.ID, Kind: "uploaded", Source: "upload", Mime: mime}
+	asset := models.Asset{
+		CampaignID: cam.ID,
+		Name:       strings.TrimSuffix(filepath.Base(fh.Filename), filepath.Ext(fh.Filename)),
+		Kind:       "uploaded",
+		Source:     "upload",
+		Mime:       mime,
+	}
 	h.db.Create(&asset)
 
 	filename := asset.ID.String() + ext
@@ -130,6 +137,26 @@ func (h *Handler) DeleteAsset(c *fiber.Ctx) error {
 	}
 	h.db.Delete(&a)
 	return c.SendStatus(fiber.StatusNoContent)
+}
+
+func (h *Handler) RenameAsset(c *fiber.Ctx) error {
+	cam, err := h.campaignFor(c, c.Params("campaignId"))
+	if err != nil {
+		return fail(c, fiber.StatusNotFound, "campaign not found")
+	}
+	var in struct {
+		Name string `json:"name"`
+	}
+	if err := c.BodyParser(&in); err != nil {
+		return fail(c, fiber.StatusBadRequest, "invalid body")
+	}
+	var a models.Asset
+	if err := h.db.Where("id = ? AND campaign_id = ?", c.Params("id"), cam.ID).First(&a).Error; err != nil {
+		return fail(c, fiber.StatusNotFound, "asset not found")
+	}
+	a.Name = strings.TrimSpace(in.Name)
+	h.db.Save(&a)
+	return c.JSON(h.toAssetOut(a, ""))
 }
 
 type attachInput struct {

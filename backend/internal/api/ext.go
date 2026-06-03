@@ -100,7 +100,7 @@ func (h *Handler) ExtUploadAsset(c *fiber.Ctx) error {
 		return fail(c, fiber.StatusBadRequest, "invalid base64")
 	}
 	mime, ext := normalizeImageMime(in.Mime)
-	asset, serr := h.saveAssetBytes(cam.ID, data, ext, mime, "uploaded", "chatgpt", in.Ref)
+	asset, serr := h.saveAssetBytes(cam.ID, data, ext, mime, "uploaded", "chatgpt", in.Ref, in.Name)
 	if serr != nil {
 		return fail(c, fiber.StatusInternalServerError, "could not store file: "+serr.Error())
 	}

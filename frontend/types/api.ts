@@ -35,6 +35,7 @@ export interface DalleResult {
 export interface ApiAsset {
   id: string
   url: string
+  name: string
   mime: string
   kind: string
   source: string

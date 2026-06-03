@@ -132,5 +132,6 @@ func (h *Handler) registerAPI(api fiber.Router) {
 	p.Get("/campaigns/:campaignId/assets", h.ListAssets)
 	p.Post("/campaigns/:campaignId/assets", h.UploadAsset)
 	p.Post("/campaigns/:campaignId/assets/attach", h.AttachAsset)
+	p.Patch("/campaigns/:campaignId/assets/:id", h.RenameAsset)
 	p.Delete("/campaigns/:campaignId/assets/:id", h.DeleteAsset)
 }

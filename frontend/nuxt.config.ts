@@ -37,7 +37,7 @@ export default defineNuxtConfig({
         'lucide:layout-dashboard', 'lucide:library', 'lucide:link', 'lucide:list', 'lucide:loader-circle', 'lucide:log-in',
         'lucide:key-square', 'lucide:puzzle',
         'lucide:log-out', 'lucide:menu', 'lucide:moon-star', 'lucide:mouse-pointer-2', 'lucide:palette',
-        'lucide:pin', 'lucide:plug-zap', 'lucide:plus', 'lucide:refresh-cw', 'lucide:save', 'lucide:scroll',
+        'lucide:pencil', 'lucide:pin', 'lucide:plug-zap', 'lucide:plus', 'lucide:refresh-cw', 'lucide:save', 'lucide:scroll',
         'lucide:scroll-text', 'lucide:search', 'lucide:search-x', 'lucide:settings-2', 'lucide:sparkles',
         'lucide:star', 'lucide:sun', 'lucide:sword', 'lucide:tags', 'lucide:trash', 'lucide:trash-2',
         'lucide:trending-up', 'lucide:triangle-alert', 'lucide:user', 'lucide:user-plus', 'lucide:users',
