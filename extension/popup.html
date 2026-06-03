@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="brand">
+        <span class="sig"></span>
+        <span>Aetherwright<small>IMAGE GRABBER</small></span>
+      </header>
+
+      <label class="fld">
+        <span>API-Basis-URL</span>
+        <input id="baseUrl" type="url" placeholder="https://pnp.dasdarki.de/api/v1" />
+      </label>
+
+      <label class="fld">
+        <span>API-Key</span>
+        <input id="apiKey" type="password" autocomplete="off" placeholder="awk_…" />
+      </label>
+
+      <button id="connect" class="btn">Verbinden &amp; Kampagnen laden</button>
+
+      <label class="fld">
+        <span>Aktive Kampagne</span>
+        <select id="campaign"><option value="">—</option></select>
+      </label>
+
+      <button id="save" class="btn primary">Speichern</button>
+
+      <p id="status" class="status"></p>
+      <p class="foot">Der Key bekommst du in Aetherwright unter <b>Einstellungen → API-Keys</b>.</p>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

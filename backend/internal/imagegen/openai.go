@@ -18,7 +18,8 @@ func generateOpenAI(ctx context.Context, cfg Config, prompt, size string) (Resul
 	if model == "" {
 		model = "dall-e-3"
 	}
-	body := map[string]any{"model": model, "prompt": prompt, "n": 1, "size": size}
+	body := map[string]any{"model": model, "prompt": prompt, "n": 1, "size": openAISize(model, size)}
+	// gpt-image-* always return b64 and reject response_format; only DALL·E takes it.
 	if strings.HasPrefix(model, "dall-e") {
 		body["response_format"] = "b64_json"
 	}
@@ -58,6 +59,34 @@ func generateOpenAI(ctx context.Context, cfg Config, prompt, size string) (Resul
 		return downloadImage(ctx, parsed.Data[0].URL)
 	}
 	return Result{}, errors.New("openai: no image data")
+}
+
+// openAISize maps a requested WxH to a value the given model accepts.
+// gpt-image-*: 1024x1024 | 1536x1024 | 1024x1536. dall-e-3: 1024x1024 | 1792x1024 | 1024x1792.
+// dall-e-2: square only.
+func openAISize(model, size string) string {
+	wide := strings.HasPrefix(size, "1792x") || strings.HasPrefix(size, "1536x")
+	tall := strings.HasSuffix(size, "x1792") || strings.HasSuffix(size, "x1536")
+	switch {
+	case strings.HasPrefix(model, "gpt-image"):
+		if wide {
+			return "1536x1024"
+		}
+		if tall {
+			return "1024x1536"
+		}
+		return "1024x1024"
+	case model == "dall-e-2":
+		return "1024x1024"
+	default: // dall-e-3 and unknown
+		if wide {
+			return "1792x1024"
+		}
+		if tall {
+			return "1024x1792"
+		}
+		return "1024x1024"
+	}
 }
 
 func downloadImage(ctx context.Context, url string) (Result, error) {

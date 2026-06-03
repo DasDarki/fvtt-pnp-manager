@@ -32,6 +32,7 @@ const rest = [
 const system = [
   { key: 'dalle', icon: 'lucide:wand-sparkles', to: '/dalle' },
   { key: 'providers', icon: 'lucide:key-round', to: '/settings/providers' },
+  { key: 'apikeys', icon: 'lucide:key-square', to: '/settings/api-keys' },
   { key: 'foundry', icon: 'lucide:plug-zap', to: '/settings/foundry' },
 ]
 </script>

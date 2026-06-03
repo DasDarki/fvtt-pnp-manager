@@ -4,6 +4,7 @@ declare const Actor: any
 declare const Item: any
 declare const Scene: any
 declare const JournalEntry: any
+declare const Folder: any
 declare const ui: any
 declare const window: any
 declare const FilePicker: any
@@ -90,6 +91,17 @@ async function handleJob(msg: AwMessage) {
         }
         const journal = await JournalEntry.create(msg.payload)
         send({ id: msg.id, type: 'result', payload: { uuid: journal.uuid, id: journal.id } })
+        break
+      }
+
+      case 'create_folder': {
+        const folder = await Folder.create({
+          name: msg.payload?.name,
+          type: msg.payload?.type || 'Actor',
+          color: msg.payload?.color || undefined,
+          folder: msg.payload?.parent || null,
+        })
+        send({ id: msg.id, type: 'result', payload: { id: folder.id, uuid: folder.uuid } })
         break
       }
 

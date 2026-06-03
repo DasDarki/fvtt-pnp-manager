@@ -50,11 +50,23 @@ func (h *Handler) registerAPI(api fiber.Router) {
 	auth.Post("/logout", h.Logout)
 	auth.Get("/me", h.Protected(), h.Me)
 
+	// API-key authenticated (browser extension). Registered before the JWT
+	// catch-all group below so the Protected() Use does not apply to it.
+	ext := api.Group("/ext", h.ApiKeyAuth())
+	ext.Get("/campaigns", h.ExtCampaigns)
+	ext.Get("/campaigns/:campaignId/assets/exists", h.ExtAssetExists)
+	ext.Post("/campaigns/:campaignId/assets/exists", h.ExtAssetsExistBatch)
+	ext.Post("/campaigns/:campaignId/assets", h.ExtUploadAsset)
+
 	p := api.Group("", h.Protected())
 
 	p.Get("/providers", h.ListProviders)
 	p.Put("/providers/:provider", h.SetProvider)
 	p.Delete("/providers/:provider", h.DeleteProvider)
+
+	p.Get("/apikeys", h.ListApiKeys)
+	p.Post("/apikeys", h.CreateApiKey)
+	p.Delete("/apikeys/:id", h.DeleteApiKey)
 
 	p.Get("/campaigns", h.ListCampaigns)
 	p.Post("/campaigns", h.CreateCampaign)
@@ -65,6 +77,8 @@ func (h *Handler) registerAPI(api fiber.Router) {
 	p.Get("/campaigns/:id/foundry", h.FoundryStatus)
 	p.Post("/campaigns/:id/foundry/discover", h.DiscoverFolders)
 	p.Get("/campaigns/:id/folders", h.ListFolders)
+	p.Post("/campaigns/:id/folders", h.CreateFolder)
+	p.Delete("/campaigns/:id/folders/:folderId", h.DeleteFolder)
 	p.Delete("/campaigns/:id", h.DeleteCampaign)
 
 	p.Get("/campaigns/:campaignId/characters", h.ListCharacters)
@@ -114,4 +128,9 @@ func (h *Handler) registerAPI(api fiber.Router) {
 
 	p.Get("/campaigns/:campaignId/dalle", h.ListDalle)
 	p.Post("/campaigns/:campaignId/dalle/generate", h.GenerateDalle)
+
+	p.Get("/campaigns/:campaignId/assets", h.ListAssets)
+	p.Post("/campaigns/:campaignId/assets", h.UploadAsset)
+	p.Post("/campaigns/:campaignId/assets/attach", h.AttachAsset)
+	p.Delete("/campaigns/:campaignId/assets/:id", h.DeleteAsset)
 }

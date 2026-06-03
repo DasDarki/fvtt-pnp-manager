@@ -9,7 +9,6 @@ const { t } = useI18n()
 const route = useRoute()
 const api = useApi()
 const campaign = useCampaignStore()
-const providers = useProviderStore()
 const id = route.params.id as string
 
 const { data: char, pending, error, refresh } = useAsyncData(
@@ -108,26 +107,9 @@ async function syncToFoundry() {
   }
 }
 
-const generatingPortrait = ref(false)
-async function generatePortrait() {
-  if (generatingPortrait.value || !campaign.currentId) return
-  generatingPortrait.value = true
-  try {
-    await api(`/campaigns/${campaign.currentId}/dalle/generate`, {
-      method: 'POST',
-      body: {
-        prompt: portraitPrompt.value || `Porträt von ${form.name}`,
-        size: '1024x1024',
-        subjectType: 'character',
-        subjectId: id,
-        provider: providers.selected,
-      },
-    })
-    await refresh()
-  } finally {
-    generatingPortrait.value = false
-  }
-}
+const pickerOpen = ref(false)
+const pickedUrl = ref('')
+watch(pickedUrl, () => refresh())
 
 const saving = ref(false)
 const saved = ref(false)
@@ -250,12 +232,18 @@ async function remove() {
           <div class="portrait">
             <span class="rl">{{ t('editor.portrait') }}</span>
             <input v-model="portraitPrompt" class="pinp" :placeholder="t('editor.portraitPrompt')" />
-            <ProviderPicker />
-            <AwButton icon="lucide:wand-sparkles" variant="soft" @click="generatePortrait">
-              {{ generatingPortrait ? t('editor.generating') : t('editor.generatePortrait') }}
+            <AwButton icon="lucide:images" variant="soft" @click="pickerOpen = true">
+              {{ t('editor.chooseImage') }}
             </AwButton>
             <small class="phint">{{ t('editor.portraitHint') }}</small>
           </div>
+          <ImagePicker
+            v-model:open="pickerOpen"
+            v-model:imageUrl="pickedUrl"
+            subject-type="character"
+            :subject-id="id"
+            :prompt-hint="portraitPrompt"
+          />
 
           <div class="meta">
             <div class="row">

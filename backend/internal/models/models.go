@@ -58,6 +58,16 @@ type ProviderCredential struct {
 	KeyEnc   string    `json:"-"`
 }
 
+type ApiKey struct {
+	Base
+	UserID     uuid.UUID  `gorm:"type:uuid;index;not null" json:"-"`
+	Name       string     `json:"name"`
+	Prefix     string     `json:"prefix"`
+	KeyHash    string     `gorm:"uniqueIndex" json:"-"`
+	Scope      string     `gorm:"default:images" json:"scope"`
+	LastUsedAt *time.Time `json:"lastUsedAt"`
+}
+
 type Folder struct {
 	Base
 	CampaignID      uuid.UUID  `gorm:"type:uuid;index;not null" json:"campaignId"`
@@ -148,6 +158,7 @@ type Asset struct {
 	Height      int        `json:"height"`
 	DalleJobID  *uuid.UUID `gorm:"type:uuid" json:"dalleJobId"`
 	FoundryPath string     `json:"foundryPath"`
+	SourceRef   string     `gorm:"index" json:"-"`
 }
 
 type Memory struct {

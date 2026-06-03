@@ -28,6 +28,7 @@
     "memories": "Memories",
     "dalle": "Image Studio",
     "providers": "Image Providers",
+    "apikeys": "API Keys",
     "foundry": "Foundry Link"
   },
   "sidebar": {
@@ -85,7 +86,8 @@
   },
   "actions": {
     "create": "Create",
-    "generate": "Generate image"
+    "generate": "Generate image",
+    "delete": "Delete"
   },
   "palette": {
     "placeholder": "Type a command or search …",
@@ -221,13 +223,49 @@
     "portrait": "Portrait",
     "portraitPrompt": "Portrait prompt …",
     "generatePortrait": "Generate portrait",
-    "portraitHint": "Uses the global campaign style for a consistent look.",
+    "chooseImage": "Choose image",
+    "portraitHint": "Pick from the library, upload, or generate anew — all in the campaign style.",
     "sync": "To Foundry",
     "folder": "Foundry folder",
     "syncing": "Syncing …",
     "synced": "✓ Created as actor in Foundry",
     "notConnected": "Foundry not connected.",
     "syncError": "Sync failed."
+  },
+  "apikeys": {
+    "title": "API Keys",
+    "subtitle": "Keys for the browser extension — may only upload images to your campaigns.",
+    "newTitle": "Create new key",
+    "newHint": "The key is shown only once. Paste it into the extension afterwards.",
+    "namePlaceholder": "Name (e.g. ChatGPT Laptop) …",
+    "create": "Create key",
+    "creating": "Creating …",
+    "once": "⚠ Shown only now — copy and keep it safe.",
+    "listTitle": "Your keys",
+    "scope": "Scope",
+    "usedAt": "last {t}",
+    "neverUsed": "never used",
+    "revoke": "Revoke",
+    "empty": "No keys created yet.",
+    "extTitle": "Set up the browser extension",
+    "ext1": "Load the Aetherwright extension (extension/ folder) as an unpacked extension in Chrome.",
+    "ext2": "Open the extension popup, enter the API base URL and key, and pick the active campaign.",
+    "ext3": "On chatgpt.com a button appears on every image to upload it to the library."
+  },
+  "picker": {
+    "title": "Choose image",
+    "close": "Close",
+    "library": "Library",
+    "upload": "Upload",
+    "generate": "Generate",
+    "loading": "Loading …",
+    "emptyLib": "No images in this campaign yet.",
+    "uploaded": "Upload",
+    "pickFile": "Choose file",
+    "uploading": "Uploading …",
+    "fileTypes": "PNG · JPG · WEBP · GIF · SVG",
+    "promptPlaceholder": "Describe the subject …",
+    "generateBtn": "Generate & apply"
   },
   "foundry": {
     "title": "Foundry Link",
@@ -253,7 +291,15 @@
     "foldersHint": "Reads the existing folders from FoundryVTT so new content lands in the right place.",
     "discover": "Read from Foundry",
     "discovering": "Reading …",
-    "noFolders": "No folders read yet."
+    "noFolders": "No folders read yet.",
+    "folderName": "Folder name …",
+    "folderType": "Type",
+    "folderNoParent": "— (top level)",
+    "folderColor": "Color",
+    "createFolder": "Create folder",
+    "creating": "Creating …",
+    "folderConnectedHint": "Created in Foundry right away (connection active).",
+    "folderLocalHint": "Created locally and pushed to Foundry on next connect."
   },
   "dalle": {
     "title": "Image Studio",
@@ -282,6 +328,8 @@
     "applied": "Applied prompt",
     "noStyle": "no global style set",
     "gallery": "Gallery",
+    "library": "Image library",
+    "upload": "Upload",
     "empty": "No images generated yet.",
     "mock": "Mock",
     "providerPick": "Image AI for this generation",

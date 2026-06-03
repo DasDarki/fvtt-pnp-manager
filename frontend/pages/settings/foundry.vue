@@ -108,6 +108,38 @@ async function discover() {
   }
 }
 
+const folderTypes = ['Actor', 'Item', 'Scene', 'JournalEntry']
+const newFolder = reactive({ name: '', foundryType: 'Actor', parentId: '', color: '#46e8ff' })
+const creatingFolder = ref(false)
+const parentOptions = computed(() => folders.value.filter((f) => f.foundryType === newFolder.foundryType))
+
+watch(
+  () => newFolder.foundryType,
+  () => {
+    if (!parentOptions.value.some((f) => f.id === newFolder.parentId)) newFolder.parentId = ''
+  },
+)
+
+async function createFolder() {
+  if (!newFolder.name.trim() || creatingFolder.value) return
+  creatingFolder.value = true
+  try {
+    await api(`/campaigns/${campaign.currentId}/folders`, {
+      method: 'POST',
+      body: {
+        name: newFolder.name.trim(),
+        foundryType: newFolder.foundryType,
+        parentId: newFolder.parentId || null,
+        color: newFolder.color,
+      },
+    })
+    newFolder.name = ''
+    await loadFolders()
+  } finally {
+    creatingFolder.value = false
+  }
+}
+
 let timer: ReturnType<typeof setInterval> | null = null
 onMounted(() => {
   loadStatus()
@@ -197,6 +229,22 @@ onBeforeUnmount(() => {
         </AwButton>
       </div>
       <p class="hint">{{ t('foundry.foldersHint') }}</p>
+
+      <div class="foldernew">
+        <input v-model="newFolder.name" class="ffield" :placeholder="t('foundry.folderName')" @keydown.enter="createFolder" />
+        <select v-model="newFolder.foundryType" class="ffield sel">
+          <option v-for="ft in folderTypes" :key="ft" :value="ft">{{ ft }}</option>
+        </select>
+        <select v-model="newFolder.parentId" class="ffield sel">
+          <option value="">{{ t('foundry.folderNoParent') }}</option>
+          <option v-for="f in parentOptions" :key="f.id" :value="f.id">{{ f.name }}</option>
+        </select>
+        <input v-model="newFolder.color" type="color" class="fcolor" :title="t('foundry.folderColor')" />
+        <AwButton icon="lucide:folder-plus" variant="primary" :disabled="creatingFolder || !newFolder.name.trim()" @click="createFolder">
+          {{ creatingFolder ? t('foundry.creating') : t('foundry.createFolder') }}
+        </AwButton>
+      </div>
+      <p class="foldernote">{{ status?.connected ? t('foundry.folderConnectedHint') : t('foundry.folderLocalHint') }}</p>
 
       <div v-if="folderGroups.length" class="ftree">
         <div v-for="g in folderGroups" :key="g.type" class="fgroup">
@@ -346,6 +394,29 @@ onBeforeUnmount(() => {
   :deep(svg) { width: 14px; height: 14px; color: var(--ink-faint); flex: none; }
 }
 .empty-f { font-size: 0.82rem; color: var(--ink-faint); font-family: var(--font-mono); margin-top: 4px; }
+
+.foldernew {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr auto auto;
+  gap: 8px;
+  margin: 6px 0 8px;
+  align-items: center;
+}
+.ffield {
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  padding: 9px 11px;
+  min-width: 0;
+  &:focus { outline: 0; border-color: var(--primary); box-shadow: var(--glow-primary); }
+}
+.ffield.sel { cursor: pointer; appearance: none; }
+.fcolor { width: 42px; height: 38px; padding: 2px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--surface-2); cursor: pointer; }
+.foldernote { font-family: var(--font-mono); font-size: 0.66rem; color: var(--ink-faint); margin: 0 0 14px; }
+@media (max-width: 720px) { .foldernew { grid-template-columns: 1fr 1fr; } }
 
 @media (max-width: 900px) {
   .grid { grid-template-columns: 1fr; }

@@ -32,6 +32,16 @@ export interface DalleResult {
   createdAt: string
 }
 
+export interface ApiAsset {
+  id: string
+  url: string
+  mime: string
+  kind: string
+  source: string
+  prompt: string
+  createdAt: string
+}
+
 export interface ApiProvider {
   provider: string
   model: string

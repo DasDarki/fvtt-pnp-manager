@@ -28,6 +28,7 @@
     "memories": "Erinnerungen",
     "dalle": "Bild-Atelier",
     "providers": "Bild-Provider",
+    "apikeys": "API-Keys",
     "foundry": "Foundry-Anbindung"
   },
   "sidebar": {
@@ -85,7 +86,8 @@
   },
   "actions": {
     "create": "Erstellen",
-    "generate": "Bild generieren"
+    "generate": "Bild generieren",
+    "delete": "Löschen"
   },
   "palette": {
     "placeholder": "Befehl oder Suche eingeben …",
@@ -221,13 +223,49 @@
     "portrait": "Porträt",
     "portraitPrompt": "Porträt-Prompt …",
     "generatePortrait": "Porträt generieren",
-    "portraitHint": "Nutzt den globalen Kampagnen-Stil für einen einheitlichen Look.",
+    "chooseImage": "Bild wählen",
+    "portraitHint": "Aus der Bibliothek wählen, hochladen oder neu generieren — alles im Kampagnen-Stil.",
     "sync": "Nach Foundry",
     "folder": "Foundry-Ordner",
     "syncing": "Synchronisiert …",
     "synced": "✓ Als Actor in Foundry angelegt",
     "notConnected": "Foundry nicht verbunden.",
     "syncError": "Synchronisierung fehlgeschlagen."
+  },
+  "apikeys": {
+    "title": "API-Keys",
+    "subtitle": "Schlüssel für die Browser-Extension — dürfen nur Bilder in deine Kampagnen hochladen.",
+    "newTitle": "Neuen Key erstellen",
+    "newHint": "Der Schlüssel wird nur einmal angezeigt. Trag ihn danach in der Extension ein.",
+    "namePlaceholder": "Name (z.B. ChatGPT Laptop) …",
+    "create": "Key erstellen",
+    "creating": "Erstellt …",
+    "once": "⚠ Nur jetzt sichtbar — kopieren und sicher aufbewahren.",
+    "listTitle": "Deine Keys",
+    "scope": "Berechtigung",
+    "usedAt": "zuletzt {t}",
+    "neverUsed": "nie genutzt",
+    "revoke": "Widerrufen",
+    "empty": "Noch keine Keys erstellt.",
+    "extTitle": "Browser-Extension einrichten",
+    "ext1": "Lade die Aetherwright-Extension (Ordner extension/) als entpackte Erweiterung in Chrome.",
+    "ext2": "Öffne das Extension-Popup, trag API-Basis-URL und den Key ein und wähle die aktive Kampagne.",
+    "ext3": "Auf chatgpt.com erscheint an jedem Bild ein Button zum Hochladen in die Bibliothek."
+  },
+  "picker": {
+    "title": "Bild wählen",
+    "close": "Schließen",
+    "library": "Bibliothek",
+    "upload": "Hochladen",
+    "generate": "Generieren",
+    "loading": "Lädt …",
+    "emptyLib": "Noch keine Bilder in dieser Kampagne.",
+    "uploaded": "Upload",
+    "pickFile": "Datei auswählen",
+    "uploading": "Lädt hoch …",
+    "fileTypes": "PNG · JPG · WEBP · GIF · SVG",
+    "promptPlaceholder": "Beschreibe das Motiv …",
+    "generateBtn": "Generieren & übernehmen"
   },
   "foundry": {
     "title": "Foundry-Anbindung",
@@ -253,7 +291,15 @@
     "foldersHint": "Liest die bestehenden Ordner aus FoundryVTT ein, damit neue Inhalte am richtigen Ort landen.",
     "discover": "Aus Foundry einlesen",
     "discovering": "Liest ein …",
-    "noFolders": "Noch keine Ordner eingelesen."
+    "noFolders": "Noch keine Ordner eingelesen.",
+    "folderName": "Ordnername …",
+    "folderType": "Typ",
+    "folderNoParent": "— (oberste Ebene)",
+    "folderColor": "Farbe",
+    "createFolder": "Ordner erstellen",
+    "creating": "Erstellt …",
+    "folderConnectedHint": "Wird sofort in Foundry angelegt (Verbindung aktiv).",
+    "folderLocalHint": "Wird lokal angelegt und beim nächsten Verbinden in Foundry erstellt."
   },
   "dalle": {
     "title": "Bild-Atelier",
@@ -282,6 +328,8 @@
     "applied": "Angewandter Prompt",
     "noStyle": "kein globaler Stil gesetzt",
     "gallery": "Galerie",
+    "library": "Bildbibliothek",
+    "upload": "Hochladen",
     "empty": "Noch keine Bilder generiert.",
     "mock": "Mock",
     "providerPick": "Bild-KI für diese Generierung",

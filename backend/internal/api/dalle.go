@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -131,8 +132,9 @@ func (h *Handler) GenerateDalle(c *fiber.Ctx) error {
 
 	filename := asset.ID.String() + "." + ext
 	if err := os.WriteFile(filepath.Join(h.cfg.UploadDir, filename), data, 0o644); err != nil {
+		log.Printf("dalle: write image to %s failed: %v", h.cfg.UploadDir, err)
 		job.Status = "error"
-		job.Error = "could not store image"
+		job.Error = "could not store image: " + err.Error()
 		h.db.Save(&job)
 		return c.Status(fiber.StatusInternalServerError).JSON(toDalleResult(job, nil))
 	}

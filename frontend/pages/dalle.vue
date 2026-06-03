@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DalleResult } from '~/types/api'
+import type { ApiAsset } from '~/types/api'
 
 definePageMeta({ layout: 'deck' })
 
@@ -11,15 +11,37 @@ const providers = useProviderStore()
 useSeoMeta({ title: () => t('dalle.title') })
 
 const { data: gallery, refresh } = useAsyncData(
-  'dalle',
+  'dalle-assets',
   async () => {
     await campaign.ensure()
-    return api<DalleResult[]>(`/campaigns/${campaign.currentId}/dalle`)
+    return api<ApiAsset[]>(`/campaigns/${campaign.currentId}/assets`)
   },
   { server: false, default: () => [] },
 )
 
 onMounted(() => providers.ensure())
+
+const fileInput = ref<HTMLInputElement | null>(null)
+const uploading = ref(false)
+async function onUpload(e: Event) {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file || uploading.value) return
+  uploading.value = true
+  try {
+    const fd = new FormData()
+    fd.append('file', file)
+    await api(`/campaigns/${campaign.currentId}/assets`, { method: 'POST', body: fd })
+    await refresh()
+  } finally {
+    uploading.value = false
+    if (fileInput.value) fileInput.value.value = ''
+  }
+}
+
+async function removeAsset(id: string) {
+  await api(`/campaigns/${campaign.currentId}/assets/${id}`, { method: 'DELETE' })
+  await refresh()
+}
 
 const stylePrompt = ref('')
 const selectedPreset = ref('')
@@ -171,8 +193,18 @@ async function generate() {
 
       <div class="right">
         <div class="gh">
-          <h2>{{ t('dalle.gallery') }}</h2>
+          <h2>{{ t('dalle.library') }}</h2>
           <span class="cnt">{{ gallery.length }}</span>
+          <AwButton icon="lucide:image-up" variant="soft" :disabled="uploading" @click="fileInput?.click()">
+            {{ uploading ? t('picker.uploading') : t('dalle.upload') }}
+          </AwButton>
+          <input
+            ref="fileInput"
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+            hidden
+            @change="onUpload"
+          />
         </div>
 
         <div v-if="generating" class="gen-skel">
@@ -182,10 +214,12 @@ async function generate() {
 
         <div v-if="gallery.length" class="grid">
           <figure v-for="g in gallery" :key="g.id" class="shot">
-            <span v-if="g.mock" class="mock">{{ t('dalle.mock') }}</span>
-            <img :src="g.imageUrl" :alt="g.prompt" loading="lazy" />
+            <span v-if="g.source === 'mock'" class="mock">{{ t('dalle.mock') }}</span>
+            <span v-else-if="g.source === 'upload'" class="up">{{ t('picker.uploaded') }}</span>
+            <button class="del" :title="t('actions.delete')" @click="removeAsset(g.id)"><Icon name="lucide:trash-2" /></button>
+            <img :src="g.url" :alt="g.prompt" loading="lazy" />
             <figcaption>
-              <p>{{ g.prompt }}</p>
+              <p>{{ g.prompt || '—' }}</p>
               <small>{{ relativeTime(g.createdAt) }}</small>
             </figcaption>
           </figure>
@@ -359,6 +393,7 @@ select.inp { cursor: pointer; appearance: none; }
 
   h2 { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; }
   .cnt { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-faint); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+  :deep(.aw-btn) { margin-left: auto; }
 }
 
 .grid {
@@ -377,8 +412,10 @@ select.inp { cursor: pointer; appearance: none; }
   transition: transform 0.3s, box-shadow 0.3s;
 
   &:hover { transform: translateY(-4px); box-shadow: 0 26px 50px -26px #000, var(--glow-secondary); }
+  &:hover .del { opacity: 1; }
   img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--void-2); }
-  .mock {
+  .mock,
+  .up {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -386,11 +423,29 @@ select.inp { cursor: pointer; appearance: none; }
     font-family: var(--font-mono);
     font-size: 0.52rem;
     letter-spacing: 0.12em;
-    color: var(--gold);
-    background: rgba(255, 194, 77, 0.14);
-    border: 1px solid var(--gold);
     padding: 3px 8px;
     border-radius: 999px;
+  }
+  .mock { color: var(--gold); background: rgba(255, 194, 77, 0.14); border: 1px solid var(--gold); }
+  .up { color: var(--emerald); background: rgba(55, 232, 164, 0.16); border: 1px solid var(--emerald); }
+  .del {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background: rgba(8, 6, 14, 0.7);
+    color: var(--ink-dim);
+    cursor: pointer;
+    opacity: 0;
+    transition: 0.2s;
+    :deep(svg) { width: 14px; height: 14px; }
+    &:hover { color: var(--ember); border-color: var(--ember); }
   }
   figcaption {
     padding: 12px 14px;

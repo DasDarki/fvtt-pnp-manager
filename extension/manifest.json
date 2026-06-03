@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Aetherwright Image Grabber",
+  "version": "1.0.0",
+  "description": "Lädt ChatGPT-Bilder per Klick in die Bibliothek deiner aktiven Aetherwright-Kampagne.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+  "optional_host_permissions": ["https://*/*", "http://*/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Aetherwright"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

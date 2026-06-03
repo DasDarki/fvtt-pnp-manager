@@ -18,6 +18,7 @@ func Migrate(db *gorm.DB) error {
 		&models.User{},
 		&models.RefreshToken{},
 		&models.ProviderCredential{},
+		&models.ApiKey{},
 		&models.Campaign{},
 		&models.Folder{},
 		&models.Character{},

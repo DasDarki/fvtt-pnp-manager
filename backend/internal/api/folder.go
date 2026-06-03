@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/aetherwright/backend/internal/models"
@@ -36,6 +37,71 @@ func (h *Handler) ListFolders(c *fiber.Ctx) error {
 	var folders []models.Folder
 	h.db.Where("campaign_id = ?", cam.ID).Order("foundry_type asc, sort asc, name asc").Find(&folders)
 	return c.JSON(folders)
+}
+
+type createFolderInput struct {
+	Name        string     `json:"name"`
+	FoundryType string     `json:"foundryType"`
+	ParentID    *uuid.UUID `json:"parentId"`
+	Color       string     `json:"color"`
+}
+
+func (h *Handler) CreateFolder(c *fiber.Ctx) error {
+	cam, err := h.campaignFor(c, c.Params("id"))
+	if err != nil {
+		return fail(c, fiber.StatusNotFound, "campaign not found")
+	}
+	var in createFolderInput
+	if err := c.BodyParser(&in); err != nil {
+		return fail(c, fiber.StatusBadRequest, "invalid body")
+	}
+	name := strings.TrimSpace(in.Name)
+	if name == "" {
+		return fail(c, fiber.StatusBadRequest, "name required")
+	}
+	ftype := in.FoundryType
+	if ftype == "" {
+		ftype = "Actor"
+	}
+
+	folder := models.Folder{
+		CampaignID:  cam.ID,
+		Name:        name,
+		FoundryType: ftype,
+		ParentID:    in.ParentID,
+		Color:       in.Color,
+		Origin:      "local",
+	}
+	h.db.Create(&folder)
+
+	if conn := h.hub.Get(cam.ID); conn != nil {
+		payload := map[string]any{"name": name, "type": ftype, "color": in.Color}
+		if pf := h.foundryFolderID(in.ParentID); pf != "" {
+			payload["parent"] = pf
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer cancel()
+		if resp, rerr := conn.Request(ctx, "create_folder", payload); rerr == nil {
+			var result struct {
+				ID string `json:"id"`
+			}
+			_ = json.Unmarshal(resp.Payload, &result)
+			if result.ID != "" {
+				folder.FoundryFolderID = result.ID
+				h.db.Save(&folder)
+			}
+		}
+	}
+	return c.Status(fiber.StatusCreated).JSON(folder)
+}
+
+func (h *Handler) DeleteFolder(c *fiber.Ctx) error {
+	cam, err := h.campaignFor(c, c.Params("id"))
+	if err != nil {
+		return fail(c, fiber.StatusNotFound, "campaign not found")
+	}
+	h.db.Where("id = ? AND campaign_id = ?", c.Params("folderId"), cam.ID).Delete(&models.Folder{})
+	return c.SendStatus(fiber.StatusNoContent)
 }
 
 func (h *Handler) DiscoverFolders(c *fiber.Ctx) error {

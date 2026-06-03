@@ -8,7 +8,6 @@ const { t } = useI18n()
 const route = useRoute()
 const api = useApi()
 const campaign = useCampaignStore()
-const providers = useProviderStore()
 const id = route.params.id as string
 
 const { data: scene, error, refresh } = useAsyncData(
@@ -106,20 +105,9 @@ async function remove() {
   await navigateTo('/scenes')
 }
 
-const generatingImage = ref(false)
-async function generateImage() {
-  if (generatingImage.value || !campaign.currentId) return
-  generatingImage.value = true
-  try {
-    await api(`/campaigns/${campaign.currentId}/dalle/generate`, {
-      method: 'POST',
-      body: { prompt: imagePrompt.value || form.name, size: '1792x1024', subjectType: 'scene', subjectId: id, provider: providers.selected },
-    })
-    await refresh()
-  } finally {
-    generatingImage.value = false
-  }
-}
+const pickerOpen = ref(false)
+const pickedUrl = ref('')
+watch(pickedUrl, () => refresh())
 
 const syncing = ref(false)
 const syncMsg = ref('')
@@ -225,12 +213,19 @@ async function delMem(mid: string) {
           <div class="portrait">
             <span class="rl">{{ t('scene.image') }}</span>
             <input v-model="imagePrompt" class="pinp" :placeholder="t('scene.imagePrompt')" />
-            <ProviderPicker />
-            <AwButton icon="lucide:wand-sparkles" variant="soft" @click="generateImage">
-              {{ generatingImage ? t('editor.generating') : t('scene.generateImage') }}
+            <AwButton icon="lucide:images" variant="soft" @click="pickerOpen = true">
+              {{ t('editor.chooseImage') }}
             </AwButton>
             <small class="phint">{{ t('editor.portraitHint') }}</small>
           </div>
+          <ImagePicker
+            v-model:open="pickerOpen"
+            v-model:imageUrl="pickedUrl"
+            subject-type="scene"
+            :subject-id="id"
+            :prompt-hint="imagePrompt"
+            default-size="1792x1024"
+          />
 
           <div class="meta">
             <div class="row"><span>{{ t('editor.syncState') }}</span><b class="dirty">{{ scene?.syncState || 'none' }}</b></div>
