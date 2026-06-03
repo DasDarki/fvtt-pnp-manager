@@ -74,19 +74,29 @@ export const useAuthStore = defineStore('auth', () => {
     setSession(s)
   }
 
+  let refreshInflight: Promise<boolean> | null = null
   async function refresh(): Promise<boolean> {
-    if (!refreshToken.value) return false
-    try {
-      const s = await $fetch<AuthSession>(`${base}/auth/refresh`, {
-        method: 'POST',
-        body: { refreshToken: refreshToken.value, device: device() },
-      })
-      setSession(s)
-      return true
-    } catch {
-      clear()
-      return false
-    }
+    // Dedupe concurrent refreshes: the backend rotates (revokes) the refresh
+    // token, so parallel 401s must share a single refresh call — otherwise the
+    // second one presents an already-revoked token and forces a spurious logout.
+    if (refreshInflight) return refreshInflight
+    refreshInflight = (async () => {
+      if (!refreshToken.value) return false
+      try {
+        const s = await $fetch<AuthSession>(`${base}/auth/refresh`, {
+          method: 'POST',
+          body: { refreshToken: refreshToken.value, device: device() },
+        })
+        setSession(s)
+        return true
+      } catch {
+        clear()
+        return false
+      }
+    })().finally(() => {
+      refreshInflight = null
+    })
+    return refreshInflight
   }
 
   async function logout() {

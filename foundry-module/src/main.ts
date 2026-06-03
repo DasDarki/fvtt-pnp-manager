@@ -57,6 +57,56 @@ function send(msg: AwMessage) {
   }
 }
 
+function awFlagId(payload: any): string | null {
+  return payload?.flags?.[MODULE_ID]?.id ?? null
+}
+
+function findByAwId(collection: any, id: string | null): any {
+  if (!id || !collection) return null
+  const list = collection.contents ?? collection
+  for (const d of list) {
+    try {
+      if (d.getFlag?.(MODULE_ID, 'id') === id) return d
+    } catch {
+      /* ignore */
+    }
+  }
+  return null
+}
+
+function clone(o: any): any {
+  return typeof structuredClone === 'function' ? structuredClone(o) : JSON.parse(JSON.stringify(o))
+}
+
+// On update, keep player-managed state: current/temp HP, inventory items,
+// effects and the actor's folder are never overwritten — only managed fields.
+function actorUpdateData(payload: any): any {
+  const p = clone(payload)
+  if (p.system?.attributes?.hp) {
+    delete p.system.attributes.hp.value
+    delete p.system.attributes.hp.temp
+  }
+  delete p.items
+  delete p.effects
+  delete p.folder
+  return p
+}
+
+function itemUpdateData(payload: any): any {
+  const p = clone(payload)
+  if (p.system) delete p.system.quantity
+  delete p.effects
+  delete p.folder
+  return p
+}
+
+function sceneUpdateData(payload: any): any {
+  const p = clone(payload)
+  delete p.folder
+  for (const k of ['tokens', 'walls', 'lights', 'sounds', 'notes', 'drawings', 'tiles', 'templates']) delete p[k]
+  return p
+}
+
 async function handleJob(msg: AwMessage) {
   try {
     switch (msg.type) {
@@ -66,22 +116,31 @@ async function handleJob(msg: AwMessage) {
 
       case 'create_actor': {
         if (msg.payload?.img) msg.payload.img = await ingestImage(msg.payload.img)
-        const actor = await Actor.create(msg.payload)
-        send({ id: msg.id, type: 'result', payload: { uuid: actor.uuid, id: actor.id, img: actor.img } })
+        const existing = findByAwId(game.actors, awFlagId(msg.payload))
+        let actor = existing
+        if (existing) await existing.update(actorUpdateData(msg.payload))
+        else actor = await Actor.create(msg.payload)
+        send({ id: msg.id, type: 'result', payload: { uuid: actor.uuid, id: actor.id, img: actor.img, updated: !!existing } })
         break
       }
 
       case 'create_item': {
         if (msg.payload?.img) msg.payload.img = await ingestImage(msg.payload.img)
-        const item = await Item.create(msg.payload)
-        send({ id: msg.id, type: 'result', payload: { uuid: item.uuid, id: item.id, img: item.img } })
+        const existing = findByAwId(game.items, awFlagId(msg.payload))
+        let item = existing
+        if (existing) await existing.update(itemUpdateData(msg.payload))
+        else item = await Item.create(msg.payload)
+        send({ id: msg.id, type: 'result', payload: { uuid: item.uuid, id: item.id, img: item.img, updated: !!existing } })
         break
       }
 
       case 'create_scene': {
         if (msg.payload?.background?.src) msg.payload.background.src = await ingestImage(msg.payload.background.src)
-        const scene = await Scene.create(msg.payload)
-        send({ id: msg.id, type: 'result', payload: { uuid: scene.uuid, id: scene.id } })
+        const existing = findByAwId(game.scenes, awFlagId(msg.payload))
+        let scene = existing
+        if (existing) await existing.update(sceneUpdateData(msg.payload))
+        else scene = await Scene.create(msg.payload)
+        send({ id: msg.id, type: 'result', payload: { uuid: scene.uuid, id: scene.id, updated: !!existing } })
         break
       }
 
