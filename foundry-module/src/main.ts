@@ -43,6 +43,7 @@ async function ingestImage(url: string): Promise<string> {
 let socket: WebSocket | null = null
 let reconnectTimer: number | null = null
 let manualClose = false
+let announcedConnected = false
 
 function getSettings() {
   return {
@@ -115,7 +116,13 @@ async function handleJob(msg: AwMessage) {
         break
 
       case 'create_actor': {
-        if (msg.payload?.img) msg.payload.img = await ingestImage(msg.payload.img)
+        if (msg.payload?.img) {
+          msg.payload.img = await ingestImage(msg.payload.img)
+          // Use the same (re-hosted) image for the prototype token so it shows
+          // on the canvas; deep-merge only touches texture.src on update.
+          msg.payload.prototypeToken = msg.payload.prototypeToken || {}
+          msg.payload.prototypeToken.texture = { ...(msg.payload.prototypeToken.texture || {}), src: msg.payload.img }
+        }
         const existing = findByAwId(game.actors, awFlagId(msg.payload))
         let actor = existing
         if (existing) await existing.update(actorUpdateData(msg.payload))
@@ -199,7 +206,12 @@ function connect() {
   socket = new WebSocket(`${wsUrl}?token=${encodeURIComponent(token)}`)
 
   socket.addEventListener('open', () => {
-    console.log('Aetherwright: relay connected')
+    if (!announcedConnected) {
+      ui.notifications?.info('Aetherwright verbunden.')
+      announcedConnected = true
+    } else {
+      console.log('Aetherwright: relay reconnected')
+    }
     send({ type: 'hello', payload: { world: game.world?.id, version: game.version } })
   })
 

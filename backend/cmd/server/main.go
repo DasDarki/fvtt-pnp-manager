@@ -38,6 +38,14 @@ func main() {
 		AllowCredentials: true,
 	}))
 
+	// Uploaded images are public assets; allow any origin to read them so the
+	// FoundryVTT / The Forge instance can fetch the bytes (to re-host them) and
+	// load them as WebGL token textures without cross-origin tainting.
+	app.Use("/uploads", func(c *fiber.Ctx) error {
+		c.Set("Access-Control-Allow-Origin", "*")
+		c.Set("Cross-Origin-Resource-Policy", "cross-origin")
+		return c.Next()
+	})
 	app.Static("/uploads", cfg.UploadDir, fiber.Static{ByteRange: true})
 
 	api.New(db, cfg).Routes(app)
