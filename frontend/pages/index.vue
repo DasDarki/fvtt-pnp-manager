@@ -39,9 +39,6 @@ function switchLocale() {
     </div>
 
     <div class="chips">
-      <span class="chip">Nuxt 3</span>
-      <span class="chip">Tailwind</span>
-      <span class="chip">vue-i18n</span>
       <span class="chip">FoundryVTT v13</span>
     </div>
   </main>
